@@ -5,46 +5,46 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-
+//Class counts number of occurences of number in a list and puts them in numberMap
 public class doIt {
 
-    Map<Integer, Integer> MapCount = new HashMap<>();
-    private int minValue = Integer.MIN_VALUE;
-    private int maxValue = Integer.MAX_VALUE;
+    Map<Integer, Integer> numberMap = new HashMap<>();
+    private int minValue = Integer.MAX_VALUE;
+    private int maxValue = Integer.MIN_VALUE;
 
     public doIt(List<Integer> integerList) {
-        set(integerList);
+        setHashMap(integerList);
     }
 
     public doIt() {
     }
 
-    public void set(List<Integer> integerList) {
-        for (Integer integer : integerList) {
-            set(integer);
+    public void setHashMap(List<Integer> integerList) {
+        for (Integer number : integerList) {
+            setHashMap(number);
         }
     }
 
-    public void set(Integer number) {
-        MapCount.merge(number, 1, Integer::sum);
+    public void setHashMap(Integer number) {
+        numberMap.merge(number, 1, Integer::sum);
 
-        if (number > minValue) {
+        if (number < minValue) {
             minValue = number;
         }
 
-        if (number < maxValue) {
+        if (number > maxValue) {
             maxValue = number;
         }
     }
 
-    public int getDefault(int integer) {
-        return MapCount.getOrDefault(integer, 0);
+    public int getDefault(int number) {
+        return numberMap.getOrDefault(number, 0);
     }
 
-    public double isOk() {
+    public double getAverage() {
         double sum = 0;
         double count = 0;
-        for (Entry<Integer, Integer> entry : MapCount.entrySet()) {
+        for (Entry<Integer, Integer> entry : numberMap.entrySet()) {
             count += entry.getValue();
             sum += entry.getKey() * entry.getValue();
         }
