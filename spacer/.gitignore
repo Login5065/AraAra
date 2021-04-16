@@ -1,5 +1,6 @@
 #HELP.md
 .idea
+spacer.iml
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/

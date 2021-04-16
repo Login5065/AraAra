@@ -1,13 +1,22 @@
 package pl.zzpj.spacer;
 
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import pl.zzpj.spacer.model.AccountEntity;
 
-@SpringBootApplication
-public class SpacerApplication {
+
+@SpringBootApplication( exclude = { SecurityAutoConfiguration.class } )
+public class SpacerApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpacerApplication.class, args);
 	}
 
+
+	@Override
+	public void run(String... args) throws Exception {
+
+	}
 }
