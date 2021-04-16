@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.zzpj.spacer.controller.dto.AccountDto;
+import pl.zzpj.spacer.controller.mapper.AccountMapper;
 import pl.zzpj.spacer.model.AccountEntity;
 import pl.zzpj.spacer.service.impl.AccountServiceImpl;
 
@@ -26,8 +28,8 @@ public class AccountController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AccountEntity> getUserById(@PathVariable("id") Long id) {
-        AccountEntity entity = service.findAccount(id);
+    public ResponseEntity<AccountDto> getUserById(@PathVariable("id") Long id) {
+        AccountDto entity = AccountMapper.INSTANCE.accountEntityToDto(service.findAccount(id));
         if (entity != null) return new ResponseEntity<>(entity, HttpStatus.OK);
 
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -36,18 +38,16 @@ public class AccountController {
     }
 
     @PostMapping("")
-    public ResponseEntity<AccountEntity> createAccount(@RequestBody AccountEntity entity) {
+    public ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto entity) {
         try {
-            AccountEntity accountEntity = service.createAccount(AccountEntity.builder()
-                    .id(entity.getId())
-                    .login(entity.getLogin())
-                    .password(entity.getPassword())
-                    .build());
-            return new ResponseEntity<>(accountEntity, HttpStatus.CREATED);
+            AccountDto createdAccount = AccountMapper.INSTANCE.accountEntityToDto
+                    (service.createAccount(AccountMapper.INSTANCE.accountDtoToEntity(entity)));
+            return new ResponseEntity<>(createdAccount, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
+
 
 }

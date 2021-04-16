@@ -25,5 +25,9 @@ public class AccountEntity {
     @Size(min = 8)
     private String password;
 
-
+    public AccountEntity(Long id, @NotNull(message = "login can't be empty") @Size(min = 6, max = 20) String login, @NotNull(message = "password can't be empty") @Size(min = 8) String password) {
+        this.id = id;
+        this.login = login;
+        this.password = password;
+    }
 }
