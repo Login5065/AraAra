@@ -1,5 +1,7 @@
 # SPACER
 
+[![Build Status](https://travis-ci.com/betonowy/AraAra.svg?branch=master)](https://travis-ci.com/betonowy/AraAra)
+
 Spring Boot project for Advanced Programming in Java course.
 
 ## Team members
