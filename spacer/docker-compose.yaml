@@ -1,7 +1,0 @@
-version: "3"
-services:
-  mongo-database:
-    image: mongo:4.4.5
-    container_name: "mongo-database"
-    ports:
-      - 27017:27017
