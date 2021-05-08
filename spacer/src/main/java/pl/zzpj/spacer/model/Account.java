@@ -47,7 +47,6 @@ public class Account {
     @Setter
     private String lastName;
 
-    @Builder.Default
     @Getter
     @Setter
     private List<String> likedPhotos = new ArrayList<>();
