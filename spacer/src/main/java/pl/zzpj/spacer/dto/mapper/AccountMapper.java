@@ -1,2 +1,4 @@
-package pl.zzpj.spacer.dto.mapper;public class AccountMapper {
+package pl.zzpj.spacer.dto.mapper;
+
+public class AccountMapper {
 }
