@@ -24,7 +24,6 @@ public class Account {
 
     @Id
     @Getter
-    @Setter
     private UUID id = UUID.randomUUID();
 
     @NotNull
