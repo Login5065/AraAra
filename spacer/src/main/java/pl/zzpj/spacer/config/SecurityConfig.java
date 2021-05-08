@@ -22,12 +22,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final MongoUserDetailsService userDetailsService;
     private final JwtRequestFilter jwtRequestFilter;
-    private final PasswordEncoder passwordEncoder;
 
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoderBean());
     }
 
     @Override
