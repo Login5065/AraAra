@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,9 +21,11 @@ import java.util.List;
 @Document("accounts")
 public class Account {
 
+
     @Id
     @Getter
-    private Long id;
+    @Setter
+    private UUID id = UUID.randomUUID();
 
     @NotNull
     @Getter

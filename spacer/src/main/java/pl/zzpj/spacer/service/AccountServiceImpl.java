@@ -23,9 +23,9 @@ public class AccountServiceImpl {
 
 
     public void addAccount(Account account) throws AppBaseException {
-        if (accountRepository.findById(account.getId()).isEmpty()) {
+        if (accountRepository.findByUsername(account.getUsername()).isEmpty()) {
             account.setPassword(passwordEncoder.encode(account.getPassword()));
-            accountRepository.insert(account);
+            accountRepository.save(account);
         } else {
             throw AccountException.accountExistsException();
         }
