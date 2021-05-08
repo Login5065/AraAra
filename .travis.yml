@@ -3,6 +3,11 @@ jdk:
   - oraclejdk11
 script: mvn clean install
 
+branches:
+  only:
+  - master
+  - development
+
 jobs:
   include:
     - stage: Test
