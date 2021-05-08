@@ -1,3 +1,12 @@
 language: java
 jdk:
   - oraclejdk11
+script: mvn clean install
+
+jobs:
+  include:
+    - stage: Test
+      script: mvn clean test
+
+notifications:
+  email: bwg66976@zwoho.com
