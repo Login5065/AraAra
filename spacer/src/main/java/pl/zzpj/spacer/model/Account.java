@@ -2,12 +2,12 @@ package pl.zzpj.spacer.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import pl.zzpj.spacer.util.Default;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -49,4 +49,12 @@ public class Account {
     @Getter
     @Setter
     private List<String> likedPhotos = new ArrayList<>();
+
+    @Default
+    public Account(String username, String password, String firstName, String lastName) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 }

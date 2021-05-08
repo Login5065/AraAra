@@ -1,5 +1,6 @@
 package pl.zzpj.spacer.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,10 +8,9 @@ import lombok.Data;
 @Builder
 @Data
 @AllArgsConstructor
-public class NewAccountDto {
+public class AccountDto {
 
     private String username;
-    private String password;
     private String firstName;
     private String lastName;
 }
