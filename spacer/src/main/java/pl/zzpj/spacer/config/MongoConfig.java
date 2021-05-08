@@ -4,9 +4,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @Configuration
-@AllArgsConstructor
+@EnableMongoRepositories("pl.zzpj.spacer.repositories")
 public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Value("${spring.data.mongodb.host}")
@@ -23,7 +24,6 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Value("${spring.data.mongodb.password}")
     private String password;
-
 
     @Override
     protected String getDatabaseName() {

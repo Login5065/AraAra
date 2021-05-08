@@ -1,5 +1,6 @@
 package pl.zzpj.spacer.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import pl.zzpj.spacer.repositories.AccountRepository;
 import java.util.List;
 import java.util.Optional;
 
-
+@AllArgsConstructor
 @Service
 public class AccountServiceImpl {
 
@@ -20,11 +21,6 @@ public class AccountServiceImpl {
 
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public AccountServiceImpl(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
-        this.accountRepository = accountRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public void addAccount(Account account) throws AppBaseException {
         if (accountRepository.findById(account.getId()).isEmpty()) {

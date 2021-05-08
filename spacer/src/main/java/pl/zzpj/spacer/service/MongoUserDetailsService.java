@@ -1,5 +1,6 @@
 package pl.zzpj.spacer.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -14,15 +15,12 @@ import pl.zzpj.spacer.repositories.AccountRepository;
 import java.util.Collection;
 import java.util.Collections;
 
+@AllArgsConstructor
 @Service
 public class MongoUserDetailsService implements UserDetailsService {
 
     private final AccountRepository accountRepository;
 
-    @Autowired
-    public MongoUserDetailsService(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

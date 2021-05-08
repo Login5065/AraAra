@@ -1,6 +1,7 @@
 package pl.zzpj.spacer.security;
 
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,18 +18,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@AllArgsConstructor
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final MongoUserDetailsService userDetailsService;
 
     private final JwtService jwtService;
-
-    @Autowired
-    public JwtRequestFilter(MongoUserDetailsService userDetailsService, JwtService jwtService) {
-        this.userDetailsService = userDetailsService;
-        this.jwtService = jwtService;
-    }
 
 
     @Override
