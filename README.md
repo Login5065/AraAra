@@ -14,4 +14,7 @@ Spring Boot project for Advanced Programming in Java course.
 | Mateusz Pietrzak | 224405 |  LYNXEMS|
 | Tobiasz Kalina| 224317| mentalsquat |
 
-## Tech Stack
+## Info
+
+Open API documentation available at:
+```localhost:8080/swagger-ui.html```
