@@ -7,7 +7,7 @@ import pl.zzpj.spacer.model.Picture;
 @Mapper(componentModel = "spring")
 public interface PictureMapper {
 
-    Picture accountDtoToAccount(PictureDto accountDto);
+    Picture toEntity(PictureDto accountDto);
 
-    PictureDto accountToAccountDto(Picture account);
+    PictureDto toDto(Picture account);
 }
