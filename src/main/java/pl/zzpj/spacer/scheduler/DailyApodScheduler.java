@@ -37,7 +37,7 @@ public class DailyApodScheduler {
         this.initialTagsFromTitleConverter = initialTagsFromTitleConverter;
     }
 
-    @Scheduled(cron = " * * * * * *")
+    @Scheduled(cron = " 0 0 12 * * *")
     public void fetchDailyApod() throws PictureException, ApodSchedulerException {
         LOGGER.error("Apod Task :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()));
         String url = "https://api.nasa.gov/planetary/apod?api_key=" + NASA_API_KEY;
