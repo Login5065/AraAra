@@ -22,7 +22,7 @@ public class AccountException extends AppBaseException {
         return new AccountException(NO_ACCOUNT);
     }
 
-    public static AppBaseException usernameMismatch() {
+    public static AccountException usernameMismatch() {
         return new AccountException(USERNAME_MISMATCH);
     }
 }

@@ -11,7 +11,7 @@ import pl.zzpj.spacer.dto.mapper.AccountMapper;
 import pl.zzpj.spacer.dto.mapper.NewAccountMapper;
 import pl.zzpj.spacer.exception.AccountException;
 import pl.zzpj.spacer.exception.AppBaseException;
-import pl.zzpj.spacer.service.AccountServiceImpl;
+import pl.zzpj.spacer.service.interfaces.AccountService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class AccountController {
 
-    private final AccountServiceImpl accountService;
+    private final AccountService accountService;
 
     private final NewAccountMapper newAccountMapper;
 
