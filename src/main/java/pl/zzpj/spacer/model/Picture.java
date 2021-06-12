@@ -46,4 +46,13 @@ public class Picture {
         this.tags = tags;
     }
 
+    @Override
+    public String toString() {
+        return "Picture{" +
+                "url='" + url + '\'' +
+                ", title='" + title + '\'' +
+                ", tags=" + tags +
+                ", addDate=" + addDate +
+                '}';
+    }
 }
