@@ -1,6 +1,6 @@
 # SPACER
 
-[![Build Status](https://travis-ci.com/betonowy/AraAra.svg?branch=master)](https://travis-ci.com/betonowy/AraAra)
+[![Build Status](https://travis-ci.com/betonowy/spacer.svg?branch=master)](https://travis-ci.com/betonowy/spacer)
 
 Spring Boot project for Advanced Programming in Java course.
 
@@ -14,4 +14,7 @@ Spring Boot project for Advanced Programming in Java course.
 | Mateusz Pietrzak | 224405 |  LYNXEMS|
 | Tobiasz Kalina| 224317| mentalsquat |
 
-## Tech Stack
+## Info
+
+Open API documentation available at:
+```localhost:8080/swagger-ui.html```
