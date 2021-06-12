@@ -6,6 +6,4 @@ import pl.zzpj.spacer.model.Comment;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface CommentRepository extends MongoRepository<Comment, UUID> {
-    Optional<Comment> findByUUID(UUID uuid);
-}
+public interface CommentRepository extends MongoRepository<Comment, UUID> { }

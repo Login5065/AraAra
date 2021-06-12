@@ -28,7 +28,7 @@ public class CommentServiceImpl {
     }
 
     public Comment getComment(UUID uuid) throws AccountException {
-        return commentRepository.findByUUID(uuid).orElseThrow(AccountException::noSuchAccountException);
+        return commentRepository.findById(uuid).orElseThrow(AccountException::noSuchAccountException);
     }
 
     public List<Comment> getAll() {
@@ -36,7 +36,7 @@ public class CommentServiceImpl {
     }
 
     public void editComment(UUID uuid, Comment comment) throws AppBaseException {
-        Optional<Comment> queryComment = commentRepository.findByUUID(uuid);
+        Optional<Comment> queryComment = commentRepository.findById(uuid);
         if (queryComment.isPresent()) {
             Comment temp = queryComment.get();
             temp.setContent(comment.getContent());
