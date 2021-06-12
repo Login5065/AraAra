@@ -7,6 +7,7 @@ import pl.zzpj.spacer.exception.AppBaseException;
 import pl.zzpj.spacer.model.Comment;
 import pl.zzpj.spacer.repositories.CommentRepository;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -40,8 +41,8 @@ public class CommentServiceImpl {
             Comment temp = queryComment.get();
             temp.setContent(comment.getContent());
             temp.setOwner(comment.getOwner());
-            temp.setParentPost(comment.getParentPost());
-            temp.setDate(new Date(System.currentTimeMillis()));
+            temp.setParentPicture(comment.getParentPicture());
+            temp.setDate(LocalDateTime.now());
             commentRepository.save(temp);
         } else {
             throw AccountException.noSuchAccountException();

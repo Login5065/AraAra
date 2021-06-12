@@ -2,10 +2,13 @@ package pl.zzpj.spacer.model;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import pl.zzpj.spacer.util.Default;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -19,15 +22,15 @@ public class Comment {
     @Getter
     private UUID id = UUID.randomUUID();
 
-    @NotNull
+    @DBRef
     @Getter
     @Setter
-    private UUID owner;
+    private Account owner;
 
-    @NotNull
+    @DBRef
     @Getter
     @Setter
-    private UUID parentPost;
+    private Picture parentPicture;
 
     @NotNull
     @Getter
@@ -37,12 +40,12 @@ public class Comment {
     @NotNull
     @Getter
     @Setter
-    private Date date = new Date(System.currentTimeMillis());
+    private LocalDateTime date = LocalDateTime.now();
 
     @Default
-    public Comment(UUID owner, UUID parentPost, String content) {
+    public Comment(Account owner, Picture parentPicture, String content) {
         this.owner = owner;
-        this.parentPost = parentPost;
+        this.parentPicture = parentPicture;
         this.content = content;
     }
 }
