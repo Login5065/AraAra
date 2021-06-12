@@ -56,5 +56,14 @@ public class AccountServiceImpl {
         }
     }
 
+    public void deleteAccount(String username) throws AppBaseException {
+        Optional<Account> queryAccount = accountRepository.findByUsername(username);
+        if (queryAccount.isPresent()) {
+            Account temp = queryAccount.get();
+            accountRepository.delete(temp);
+        } else {
+            throw AccountException.noSuchAccountException();
+        }
+    }
 
 }
