@@ -13,9 +13,13 @@ import pl.zzpj.spacer.dto.PictureDto;
 import pl.zzpj.spacer.dto.mapper.PictureMapper;
 import pl.zzpj.spacer.exception.PictureException;
 import pl.zzpj.spacer.service.interfaces.PictureService;
+import pl.zzpj.spacer.util.I18n;
 
 import javax.validation.constraints.NotNull;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -55,9 +59,18 @@ public class PictureController {
     }
 
     @GetMapping("pictures/{start}/{end}")
-    public ResponseEntity<List<PictureDto>> getPicturesByTag(@NotNull @PathVariable("start") LocalDateTime start,
-                                                             @NotNull @PathVariable("end") LocalDateTime end) {
-        return ResponseEntity.status(HttpStatus.OK).body(pictureService.getAllBetweenDate(start, end)
+    public ResponseEntity getPicturesByDate(@NotNull @PathVariable("start") String start,
+                                            @NotNull @PathVariable("end") String end) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate;
+        Date endDate;
+        try {
+            startDate = sdf.parse(start);
+            endDate = sdf.parse(end);
+        } catch (ParseException e) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(I18n.DATE_PARSE_EXCEPTION);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(pictureService.getAllBetweenDate(startDate, endDate)
                 .stream()
                 .map(pictureMapper::toDto)
                 .collect(Collectors.toList()));

@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import pl.zzpj.spacer.util.Default;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -37,7 +37,7 @@ public class Picture {
     private Set<String> tags = new HashSet<>();
 
     @Getter
-    private LocalDateTime addDate = LocalDateTime.now();
+    private final Date creationDate = new Date(System.currentTimeMillis());
 
     @Default
     public Picture(String url, String title, Set<String> tags) {
@@ -52,7 +52,7 @@ public class Picture {
                 "url='" + url + '\'' +
                 ", title='" + title + '\'' +
                 ", tags=" + tags +
-                ", addDate=" + addDate +
+                ", addDate=" + creationDate +
                 '}';
     }
 }

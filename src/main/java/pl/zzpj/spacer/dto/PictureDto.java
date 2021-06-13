@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
@@ -19,5 +21,7 @@ public class PictureDto {
     private String title;
 
     private Set<String> tags;
+
+    private Date creationDate;
 
 }

@@ -7,7 +7,7 @@ import pl.zzpj.spacer.model.Picture;
 import pl.zzpj.spacer.repositories.PictureRepository;
 import pl.zzpj.spacer.service.interfaces.PictureService;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -39,8 +39,8 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public List<Picture> getAllBetweenDate(LocalDateTime start, LocalDateTime end) {
-        return pictureRepository.findAllByAddDateBetween(start, end);
+    public List<Picture> getAllBetweenDate(Date start, Date end) {
+        return pictureRepository.findAllByCreationDateBetween(start, end);
     }
 
     @Override

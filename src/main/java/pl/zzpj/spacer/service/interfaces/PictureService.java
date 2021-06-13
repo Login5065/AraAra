@@ -3,7 +3,7 @@ package pl.zzpj.spacer.service.interfaces;
 import pl.zzpj.spacer.exception.PictureException;
 import pl.zzpj.spacer.model.Picture;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -15,7 +15,7 @@ public interface PictureService {
 
     List<Picture> getAll();
 
-    List<Picture> getAllBetweenDate(LocalDateTime start, LocalDateTime end);
+    List<Picture> getAllBetweenDate(Date start, Date end);
 
     List<Picture> getAllByTag(String tag);
 
