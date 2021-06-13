@@ -132,9 +132,6 @@ public class CommentIntegrationTest {
 
         tokenHenry = res.getResponse().getContentAsString();
 
-        UUID.randomUUID();
-        UUID.randomUUID();
-
         // create/post picture
         PictureDto newPicture = PictureDto.builder()
                 .title("Test picture posted Integrated")
@@ -233,7 +230,7 @@ public class CommentIntegrationTest {
     void FindCommentByPictureId() throws Exception {
         List<CommentDto> comments = MvcGetCommentByPictureId(testPictureId, tokenUsero);
 
-//        Assertions.assertTrue(2 <= comments.size());
+        Assertions.assertTrue(2 == comments.size() || comments.size() == 4);
     }
 
     private List<CommentDto> MvcGetCommentByUsername(String username, String token) throws Exception {

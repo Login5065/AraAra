@@ -176,7 +176,7 @@ public class CommentServiceTest {
     void FindCommentByPictureId() throws Exception {
         List<Comment> comments = commentService.getCommentsByPictureId(testPictureId);
 
-        Assertions.assertTrue(2 <= comments.size());
+        Assertions.assertTrue(2 == comments.size() || 4 == comments.size());
     }
 
     @Order(3)
