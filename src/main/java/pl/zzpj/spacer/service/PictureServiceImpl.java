@@ -21,7 +21,7 @@ public class PictureServiceImpl implements PictureService {
 
     @Override
     public void addPicture(Picture picture) throws PictureException {
-        if (pictureRepository.findById(picture.getId()).isEmpty()) {
+        if (pictureRepository.findByTitle(picture.getTitle()).isEmpty()) {
             pictureRepository.save(picture);
         } else {
             throw PictureException.pictureExistsException();

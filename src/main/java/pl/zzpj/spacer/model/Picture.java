@@ -39,7 +39,8 @@ public class Picture {
     private Set<String> tags = new HashSet<>();
 
     @Getter
-    private final Date creationDate = new Date(System.currentTimeMillis());
+    @Setter
+    private Date creationDate = new Date(System.currentTimeMillis());
 
     @Default
     public Picture(String url, String title, Set<String> tags) {
