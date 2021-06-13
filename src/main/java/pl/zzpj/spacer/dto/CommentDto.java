@@ -8,8 +8,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class CommentDto {
-
-    private String username;
+    private String owner;
+    private String pictureId;
     private String content;
     private String date;
 }

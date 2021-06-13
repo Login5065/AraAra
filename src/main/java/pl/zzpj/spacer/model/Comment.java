@@ -22,15 +22,15 @@ public class Comment {
     @Getter
     private UUID id = UUID.randomUUID();
 
-    @DBRef
+    @NotNull
     @Getter
     @Setter
-    private Account owner;
+    private String owner;
 
-    @DBRef
+    @NotNull
     @Getter
     @Setter
-    private Picture parentPicture;
+    private String pictureId;
 
     @NotNull
     @Getter
@@ -43,9 +43,9 @@ public class Comment {
     private LocalDateTime date = LocalDateTime.now();
 
     @Default
-    public Comment(Account owner, Picture parentPicture, String content) {
+    public Comment(String owner, String pictureId, String content) {
         this.owner = owner;
-        this.parentPicture = parentPicture;
+        this.pictureId = pictureId;
         this.content = content;
     }
 }
