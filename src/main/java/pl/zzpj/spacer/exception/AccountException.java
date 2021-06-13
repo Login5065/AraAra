@@ -1,10 +1,8 @@
 package pl.zzpj.spacer.exception;
 
-public class AccountException extends AppBaseException {
+import pl.zzpj.spacer.util.I18n;
 
-    private final static String ACCOUNT_EXISTS = "Account already exists";
-    private final static String NO_ACCOUNT = "No such account found";
-    private final static String USERNAME_MISMATCH = "Usernames do not match";
+public class AccountException extends AppBaseException {
 
     public AccountException(String message) {
         super(message);
@@ -15,14 +13,14 @@ public class AccountException extends AppBaseException {
     }
 
     public static AccountException accountExistsException() {
-        return new AccountException(ACCOUNT_EXISTS);
+        return new AccountException(I18n.ACCOUNT_EXISTS);
     }
 
     public static AccountException noSuchAccountException() {
-        return new AccountException(NO_ACCOUNT);
+        return new AccountException(I18n.NO_ACCOUNT);
     }
 
-    public static AppBaseException usernameMismatch() {
-        return new AccountException(USERNAME_MISMATCH);
+    public static AccountException usernameMismatch() {
+        return new AccountException(I18n.USERNAME_MISMATCH);
     }
 }
