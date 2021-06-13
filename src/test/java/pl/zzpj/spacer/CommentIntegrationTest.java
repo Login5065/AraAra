@@ -20,6 +20,7 @@ import pl.zzpj.spacer.dto.PictureDto;
 import pl.zzpj.spacer.exception.AppBaseException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -230,7 +231,12 @@ public class CommentIntegrationTest {
     void FindCommentByPictureId() throws Exception {
         List<CommentDto> comments = MvcGetCommentByPictureId(testPictureId, tokenUsero);
 
-        Assertions.assertTrue(2 == comments.size() || comments.size() == 4);
+        comments = comments.stream().filter((CommentDto comment)
+                -> comment.getOwner().equals("henryIntegrated")
+                || comment.getOwner().equals("useroIntegrated")
+        ).collect(Collectors.toList());
+
+        Assertions.assertEquals(2, comments.size());
     }
 
     private List<CommentDto> MvcGetCommentByUsername(String username, String token) throws Exception {

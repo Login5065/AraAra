@@ -22,6 +22,7 @@ import pl.zzpj.spacer.service.CommentServiceImpl;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -176,7 +177,12 @@ public class CommentServiceTest {
     void FindCommentByPictureId() throws Exception {
         List<Comment> comments = commentService.getCommentsByPictureId(testPictureId);
 
-        Assertions.assertTrue(2 == comments.size() || 4 == comments.size());
+        comments = comments.stream().filter((Comment comment)
+                -> comment.getOwner().equals("henry")
+                || comment.getOwner().equals("usero")
+        ).collect(Collectors.toList());
+
+        Assertions.assertEquals(2, comments.size());
     }
 
     @Order(3)
