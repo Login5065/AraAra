@@ -77,16 +77,21 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     public void editRating(Rating rating) throws AppBaseException {
-        Optional<Rating> queryRating = ratingRepository.findById(rating.getId());
-        if (queryRating.isPresent()) {
-            Rating temp = queryRating.get();
-            temp.setRating(rating.getRating());
-            temp.setOwner(rating.getOwner());
-            temp.setPictureId(rating.getPictureId());
-            temp.setDate(LocalDateTime.now());
-            ratingRepository.save(temp);
+        if (rating.getRating() > 5 || rating.getRating() < 0) {
+            throw RatingException.noSuchRating();
         } else {
-            throw AccountException.noSuchAccountException();
+
+            Optional<Rating> queryRating = ratingRepository.findById(rating.getId());
+            if (queryRating.isPresent()) {
+                Rating temp = queryRating.get();
+                temp.setRating(rating.getRating());
+                temp.setOwner(rating.getOwner());
+                temp.setPictureId(rating.getPictureId());
+                temp.setDate(LocalDateTime.now());
+                ratingRepository.save(temp);
+            } else {
+                throw AccountException.noSuchAccountException();
+            }
         }
     }
 }
