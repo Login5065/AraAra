@@ -21,7 +21,7 @@ public class PictureServiceImpl implements PictureService {
 
     @Override
     public void addPicture(Picture picture) throws PictureException {
-        if (pictureRepository.findById(picture.getId()).isEmpty()) {
+        if (pictureRepository.findByTitle(picture.getTitle()).isEmpty()) {
             pictureRepository.save(picture);
         } else {
             throw PictureException.pictureExistsException();
@@ -29,7 +29,7 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public Picture getPicture(UUID uuid) throws PictureException {
+    public Picture getPicture(String uuid) throws PictureException {
         return pictureRepository.findById(uuid).orElseThrow(PictureException::noSuchPictureException);
     }
 
@@ -49,7 +49,7 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public void addPictureTags(UUID pictureId, Set<String> newTags) throws PictureException {
+    public void addPictureTags(String pictureId, Set<String> newTags) throws PictureException {
         Optional<Picture> queryPicture = pictureRepository.findById(pictureId);
         if (queryPicture.isPresent()) {
             Picture tmp = queryPicture.get();
@@ -61,7 +61,7 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public void deletePictureTags(UUID pictureId, Set<String> tagsToDelete) throws PictureException {
+    public void deletePictureTags(String pictureId, Set<String> tagsToDelete) throws PictureException {
         Optional<Picture> queryPicture = pictureRepository.findById(pictureId);
         if (queryPicture.isPresent()) {
             Picture tmp = queryPicture.get();

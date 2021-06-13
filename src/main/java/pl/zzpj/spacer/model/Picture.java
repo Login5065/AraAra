@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import pl.zzpj.spacer.util.Default;
 
@@ -22,7 +23,7 @@ import java.util.UUID;
 public class Picture {
     @Id
     @Getter
-    private UUID id = UUID.randomUUID();
+    private String id;
 
     @NotNull
     @Getter
@@ -30,6 +31,7 @@ public class Picture {
 
     @NotNull
     @Getter
+    @Indexed(unique = true)
     private String title;
 
     @Getter
@@ -37,7 +39,8 @@ public class Picture {
     private Set<String> tags = new HashSet<>();
 
     @Getter
-    private final Date creationDate = new Date(System.currentTimeMillis());
+    @Setter
+    private Date creationDate = new Date(System.currentTimeMillis());
 
     @Default
     public Picture(String url, String title, Set<String> tags) {

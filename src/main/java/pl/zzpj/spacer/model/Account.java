@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import pl.zzpj.spacer.util.Default;
 
@@ -24,11 +25,12 @@ public class Account {
 
     @Id
     @Getter
-    private UUID id = UUID.randomUUID();
+    private String id;
 
     @NotNull
     @Getter
     @Size(min = 1, max = 32)
+    @Indexed(unique = true)
     private String username;
 
     @NotNull
