@@ -1,7 +1,12 @@
 package pl.zzpj.spacer.dto;
 
-import pl.zzpj.spacer.model.Rating;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
+@Builder
+@Data
+@AllArgsConstructor
 public class RatingDto {
     private String owner;
     private String pictureId;
