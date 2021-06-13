@@ -34,7 +34,7 @@ public class Rating {
     @NotNull
     @Getter
     @Setter
-    private int rating;
+    private Integer rating;
 
     @NotNull
     @Getter
@@ -42,7 +42,7 @@ public class Rating {
     private LocalDateTime date = LocalDateTime.now();
 
     @Default
-    public Rating(String owner, String pictureId, int rating) {
+    public Rating(String owner, String pictureId, Integer rating) {
         this.owner = owner;
         this.pictureId = pictureId;
         this.rating = rating;
