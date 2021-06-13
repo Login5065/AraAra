@@ -170,7 +170,7 @@ class PictureServiceImplTest {
         then(pictureRepository).should().findById(picture.getId());
         then(pictureRepository).should().save(picture);
         then(pictureRepository).shouldHaveNoMoreInteractions();
-
+        assertTrue(picture.getTags().contains(tag));
 
     }
 
@@ -191,5 +191,6 @@ class PictureServiceImplTest {
         then(pictureRepository).should().findById(picture.getId());
         then(pictureRepository).should().save(picture);
         then(pictureRepository).shouldHaveNoMoreInteractions();
+        assertFalse(picture.getTags().contains(tag));
     }
 }
