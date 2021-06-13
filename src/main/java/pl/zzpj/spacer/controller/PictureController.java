@@ -34,7 +34,7 @@ public class PictureController {
     private final PictureMapper pictureMapper;
 
     @GetMapping("picture/{uuid}")
-    public ResponseEntity getPicture(@NotNull @PathVariable("uuid") UUID uuid) {
+    public ResponseEntity getPicture(@NotNull @PathVariable("uuid") String uuid) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(pictureMapper.toDto(pictureService.getPicture(uuid)));
         } catch (PictureException e) {
@@ -87,7 +87,7 @@ public class PictureController {
     }
 
     @PutMapping("picture/{uuid}/tags/add")
-    public ResponseEntity<String> addPictureTags(@NotNull @PathVariable("uuid") UUID uuid, @RequestBody Set<String> tagSetDto) {
+    public ResponseEntity<String> addPictureTags(@NotNull @PathVariable("uuid") String uuid, @RequestBody Set<String> tagSetDto) {
         try {
             pictureService.addPictureTags(uuid, tagSetDto);
             return ResponseEntity.status(HttpStatus.OK).build();
@@ -97,7 +97,7 @@ public class PictureController {
     }
 
     @PutMapping("picture/{uuid}/tags/delete")
-    public ResponseEntity<String> deletePictureTags(@NotNull @PathVariable("uuid") UUID uuid, @RequestBody Set<String> tagSetDto) {
+    public ResponseEntity<String> deletePictureTags(@NotNull @PathVariable("uuid") String uuid, @RequestBody Set<String> tagSetDto) {
         try {
             pictureService.deletePictureTags(uuid, tagSetDto);
             return ResponseEntity.status(HttpStatus.OK).build();

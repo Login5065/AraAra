@@ -1,6 +1,7 @@
 package pl.zzpj.spacer.scheduler;
 
 
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class DailyApodScheduler {
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     @Value("${nasa.api.key}")
+    @Setter
     private String NASA_API_KEY;
 
     private final PictureService pictureService;
@@ -32,7 +34,7 @@ public class DailyApodScheduler {
     private final InitialTagsFromTitleConverter initialTagsFromTitleConverter;
 
     @Autowired
-    public DailyApodScheduler(PictureService pictureService, InitialTagsFromTitleConverter initialTagsFromTitleConverter) {
+    public DailyApodScheduler( PictureService pictureService, InitialTagsFromTitleConverter initialTagsFromTitleConverter) {
         this.pictureService = pictureService;
         this.initialTagsFromTitleConverter = initialTagsFromTitleConverter;
     }
@@ -44,7 +46,6 @@ public class DailyApodScheduler {
 
         RestTemplate apodTemplate = new RestTemplate();
         Picture result = apodTemplate.getForObject(url, Picture.class);
-        System.out.println(result);
         if (result != null) {
             result.getTags().addAll(initialTagsFromTitleConverter.convertTitleToTags(result.getTitle()));
             pictureService.addPicture(result);
