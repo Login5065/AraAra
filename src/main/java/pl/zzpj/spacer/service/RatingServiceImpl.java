@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.zzpj.spacer.exception.AccountException;
 import pl.zzpj.spacer.exception.AppBaseException;
+import pl.zzpj.spacer.exception.RatingException;
 import pl.zzpj.spacer.model.Account;
 import pl.zzpj.spacer.model.Comment;
 import pl.zzpj.spacer.model.Rating;
@@ -35,15 +36,22 @@ public class RatingServiceImpl implements RatingService {
     public void addRating(Rating rating) throws AppBaseException {
         boolean var = true;
 
-        Account account = accountRepository.findByUsername(rating.getOwner()).orElseThrow();
-        Picture picture = pictureRepository.findById(rating.getPictureId()).orElseThrow();
+        if(rating.getRating() >5 || rating.getRating() < 0){
+            throw RatingException.noSuchRating();
+        }else {
 
-        if (!account.getUsername().equals(rating.getOwner()) || !picture.getId().toString().equals(rating.getPictureId())) var = false;
+            Account account = accountRepository.findByUsername(rating.getOwner()).orElseThrow();
+            Picture picture = pictureRepository.findById(rating.getPictureId()).orElseThrow();
 
-        if (var) { //TODO: Implement checks
-            ratingRepository.save(rating);
-        } else {
-            throw AccountException.accountExistsException();
+            if (!account.getUsername().equals(rating.getOwner()) || !picture.getId().toString().equals(rating.getPictureId()))
+                var = false;
+
+            if (var) { //TODO: Implement checks
+                ratingRepository.save(rating);
+            } else {
+                throw AccountException.accountExistsException();
+            }
+
         }
     }
 

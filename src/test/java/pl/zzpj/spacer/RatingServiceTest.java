@@ -172,7 +172,7 @@ public class RatingServiceTest {
 
         ratingService.addRating(ratingMapper.ratingDtoToRating(ratingDto));
     }
-    
+
     @Order(3)
     @Test
     void FindCommentsByUsername() throws Exception {
