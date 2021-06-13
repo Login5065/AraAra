@@ -139,7 +139,7 @@ public class CommentIntegrationTest {
         PictureDto newPicture = PictureDto.builder()
                 .title("Test picture posted Integrated")
                 .url("https://picsum.photos/400")
-                .id(UUID.randomUUID())
+                .id(UUID.randomUUID().toString())
                 .build();
 
         String newPictureJson = newPictureJson(newPicture);
@@ -152,7 +152,7 @@ public class CommentIntegrationTest {
         newPicture = PictureDto.builder()
                 .title("Another test picture posted Integrated")
                 .url("https://picsum.photos/500")
-                .id(UUID.randomUUID())
+                .id(UUID.randomUUID().toString())
                 .build();
 
         newPictureJson = newPictureJson(newPicture);

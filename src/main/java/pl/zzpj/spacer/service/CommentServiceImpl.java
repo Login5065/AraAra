@@ -32,7 +32,7 @@ public class CommentServiceImpl implements CommentService {
         boolean var = true;
 
         Account account = accountRepository.findByUsername(comment.getOwner()).orElseThrow();
-        Picture picture = pictureRepository.findById(UUID.fromString(comment.getPictureId())).orElseThrow();
+        Picture picture = pictureRepository.findById(comment.getPictureId()).orElseThrow();
 
         if (!account.getUsername().equals(comment.getOwner()) || !picture.getId().toString().equals(comment.getPictureId())) var = false;
 

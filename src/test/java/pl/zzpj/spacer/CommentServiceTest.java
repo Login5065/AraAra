@@ -106,7 +106,7 @@ public class CommentServiceTest {
         PictureDto newPicture = PictureDto.builder()
                 .title("Test picture posted")
                 .url("https://picsum.photos/200")
-                .id(UUID.randomUUID())
+                .id(UUID.randomUUID().toString())
                 .build();
 
         String newPictureJson = newPictureJson(newPicture);
@@ -119,7 +119,7 @@ public class CommentServiceTest {
         newPicture = PictureDto.builder()
                 .title("Another test picture posted")
                 .url("https://picsum.photos/300")
-                .id(UUID.randomUUID())
+                .id(UUID.randomUUID().toString())
                 .build();
 
         newPictureJson = newPictureJson(newPicture);
