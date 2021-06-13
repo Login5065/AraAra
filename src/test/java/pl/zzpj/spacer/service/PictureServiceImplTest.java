@@ -186,7 +186,7 @@ class PictureServiceImplTest {
         given(pictureRepository.findById(any(String.class)))
                 .willReturn(Optional.of(picture));
         //when
-        assertDoesNotThrow(() -> pictureService.addPictureTags(picture.getId(), Collections.singleton(tag)));
+        assertDoesNotThrow(() -> pictureService.deletePictureTags(picture.getId(), Collections.singleton(tag)));
         //then
         then(pictureRepository).should().findById(picture.getId());
         then(pictureRepository).should().save(picture);
