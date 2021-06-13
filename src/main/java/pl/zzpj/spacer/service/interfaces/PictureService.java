@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface PictureService {
     void addPicture(Picture picture) throws PictureException;
 
-    Picture getPicture(UUID uuid) throws PictureException;
+    Picture getPicture(String uuid) throws PictureException;
 
     List<Picture> getAll();
 
@@ -19,7 +19,7 @@ public interface PictureService {
 
     List<Picture> getAllByTag(String tag);
 
-    void addPictureTags(UUID pictureId, Set<String> newTags) throws PictureException;
+    void addPictureTags(String pictureId, Set<String> newTags) throws PictureException;
 
-    void deletePictureTags(UUID pictureId, Set<String> tagsToDelete) throws PictureException;
+    void deletePictureTags(String pictureId, Set<String> tagsToDelete) throws PictureException;
 }
