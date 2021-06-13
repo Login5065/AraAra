@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface RatingRepository extends MongoRepository<Rating, String> {
-        Optional<Rating> findAllByOwner(String username);
+        Optional<List<Rating>> findAllByOwner(String username);
         Optional<List<Rating>> findAllByPictureId(String pictureId);
-        Optional<List<Rating>> find();
+        Optional<Rating> findById(UUID id);
 }
