@@ -105,9 +105,9 @@ public class AccountIntegrationTest {
 
         // create/post picture
         PictureDto newPicture = PictureDto.builder()
-                .title("Test picture posted Integrated")
-                .url("https://picsum.photos/401")
-                .id(UUID.randomUUID().toString())
+                .title("Test picture posted Integrated a")
+                .url("https://picsum.photos/403")
+                .id(UUID.randomUUID().toString()+"a")
                 .build();
 
         String newPictureJson = newPictureJson(newPicture);
@@ -119,9 +119,9 @@ public class AccountIntegrationTest {
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         newPicture = PictureDto.builder()
-                .title("Another test picture posted Integrated")
-                .url("https://picsum.photos/501")
-                .id(UUID.randomUUID().toString())
+                .title("Another test picture posted Integrated a")
+                .url("https://picsum.photos/503")
+                .id(UUID.randomUUID().toString()+"a")
                 .build();
 
         newPictureJson = newPictureJson(newPicture);
