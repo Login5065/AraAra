@@ -47,7 +47,7 @@ public class AccountServiceImplTest {
     void addAccountWithNoDuplicatesInDatabase() {
         //given
         Account account = new Account("TestId", "TestUsername", "TestPassword",
-                "TestFirstName", "TestLastName", new HashSet<>());
+                "TestFirstName", "TestLastName", "email@email.com", new HashSet<>());
         //when
         assertDoesNotThrow(() -> accountService.addAccount(account));
         verify(accountRepository).save(accountArgumentCaptor.capture());
@@ -62,7 +62,7 @@ public class AccountServiceImplTest {
     void addAccountWithDuplicatesInDatabase() {
         //given
         Account account = new Account("TestId", "TestUsername", "TestPassword",
-                "TestFirstName", "TestLastName", new HashSet<>());
+                "TestFirstName", "TestLastName", "email@email.com", new HashSet<>());
         given(accountRepository.findByUsername(any(String.class))).willReturn(java.util.Optional.of(account));
         //when
         assertThrows(AccountException.class, () -> accountService.addAccount(account));
@@ -74,7 +74,7 @@ public class AccountServiceImplTest {
     void getAccountWithProperUsername() {
         //given
         Account account = new Account("TestId", "TestUsername", "TestPassword",
-                "TestFirstName", "TestLastName", new HashSet<>());
+                "TestFirstName", "TestLastName", "email@email.com", new HashSet<>());
         given(accountRepository.findByUsername(any(String.class))).willReturn(java.util.Optional.of(account));
         //when
         assertDoesNotThrow(() -> accountService.getAccount(account.getUsername()));
@@ -89,7 +89,7 @@ public class AccountServiceImplTest {
     void getAccountWithBadUsername() {
         //given
         Account account = new Account("TestId", "TestUsername", "TestPassword",
-                "TestFirstName", "TestLastName", new HashSet<>());
+                "TestFirstName", "TestLastName", "email@email.com", new HashSet<>());
         given(accountRepository.findByUsername(any(String.class))).willReturn(Optional.empty());
         //when
         assertThrows(AccountException.class, () -> accountService.getAccount(account.getUsername()));
@@ -101,7 +101,7 @@ public class AccountServiceImplTest {
     void getAll() {
         //given
         Account account = new Account("TestId", "TestUsername", "TestPassword",
-                "TestFirstName", "TestLastName", new HashSet<>());
+                "TestFirstName", "TestLastName", "email@email.com", new HashSet<>());
         given(accountRepository.findAll()).willReturn(List.of(account));
         //when
         assertDoesNotThrow(() -> accountService.getAll());
@@ -115,9 +115,9 @@ public class AccountServiceImplTest {
     void editAccount() {
         //given
         Account account = new Account("TestId", "TestUsername", "TestPassword",
-                "TestFirstName", "TestLastName", new HashSet<>());
+                "TestFirstName", "TestLastName", "email@email.com", new HashSet<>());
         Account account2 = new Account("TestId2", "TestUsername", "TestPassword2",
-                "TestFirstName2", "TestLastName2", new HashSet<>());
+                "TestFirstName2", "TestLastName2", "email2@email.com", new HashSet<>());
         given(accountRepository.findByUsername(any(String.class))).willReturn(java.util.Optional.of(account));
         //when
         assertDoesNotThrow(() -> accountService.editAccount(account.getUsername(), account2));
@@ -135,7 +135,7 @@ public class AccountServiceImplTest {
     void deleteAccount() {
         //given
         Account account = new Account("TestId", "TestUsername", "TestPassword",
-                "TestFirstName", "TestLastName", new HashSet<>());
+                "TestFirstName", "TestLastName", "email@email.com", new HashSet<>());
         given(accountRepository.findByUsername(any(String.class))).willReturn(java.util.Optional.of(account));
         //when
         assertDoesNotThrow(() -> accountService.deleteAccount(account.getUsername()));
@@ -151,7 +151,7 @@ public class AccountServiceImplTest {
     void addLikedPicture() {
         //given
         Account account = new Account("TestId", "TestUsername", "TestPassword",
-                "TestFirstName", "TestLastName", new HashSet<>());
+                "TestFirstName", "TestLastName", "email@email.com", new HashSet<>());
         given(accountRepository.findByUsername(any(String.class))).willReturn(java.util.Optional.of(account));
         Picture picture = new Picture("TestID", "www.testurl.it",
                 "TestTitle",
@@ -173,7 +173,7 @@ public class AccountServiceImplTest {
     void removeLikedPicture() {
         //given
         Account account = new Account("TestId", "TestUsername", "TestPassword",
-                "TestFirstName", "TestLastName", new HashSet<>(Collections.singletonList("TestID")));
+                "TestFirstName", "TestLastName", "email@email.com", new HashSet<>(Collections.singletonList("TestID")));
         given(accountRepository.findByUsername(any(String.class))).willReturn(java.util.Optional.of(account));
         //when
         assertDoesNotThrow(() -> accountService.removeLikedPicture(account.getUsername(), "TestID"));
