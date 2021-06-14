@@ -7,31 +7,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import pl.zzpj.spacer.dto.CommentDto;
 import pl.zzpj.spacer.dto.NewAccountDto;
 import pl.zzpj.spacer.dto.PictureDto;
-import pl.zzpj.spacer.dto.mapper.CommentMapper;
-import pl.zzpj.spacer.dto.mapper.CommentMapperImpl;
-import pl.zzpj.spacer.exception.AppBaseException;
-import pl.zzpj.spacer.model.Comment;
-import pl.zzpj.spacer.service.CommentServiceImpl;
+import pl.zzpj.spacer.service.AccountServiceImpl;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @AutoConfigureMockMvc
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-public class CommentServiceTest {
-
-    CommentMapper commentMapper = new CommentMapperImpl();
+public class AccountServiceTest
+{
 
     String newAccToJson(NewAccountDto nad) {
         return JsonBuilderFactory.buildObject()
@@ -39,7 +30,6 @@ public class CommentServiceTest {
                 .add("password", nad.getPassword())
                 .add("firstName", nad.getFirstName())
                 .add("lastName", nad.getLastName())
-                .add("email", nad.getEmail())
                 .getJson().toString();
     }
 
@@ -52,19 +42,19 @@ public class CommentServiceTest {
 
     String newPictureJson(PictureDto pd) {
         return JsonBuilderFactory.buildObject()
-                .add("id", pd.getId().toString())
+                .add("id", pd.getId())
                 .add("url", pd.getUrl())
                 .add("title", pd.getTitle())
                 .getJson().toString();
     }
 
     @Autowired
-    CommentServiceImpl commentService;
+    AccountServiceImpl accountService;
 
     @Autowired
     MockMvc mvc;
 
-    static String tokenUsero;
+    static String tokenUser1;
     static String testPictureId;
     static String testPictureId2;
 
@@ -73,8 +63,8 @@ public class CommentServiceTest {
     void CreateTestData() throws Exception {
         // create test user account
         NewAccountDto newAccount = NewAccountDto.builder()
-                .password("pasuworudo")
-                .username("usero")
+                .password("password1")
+                .username("user1")
                 .build();
 
         String newAccJson = newAccToJson(newAccount);
@@ -85,8 +75,8 @@ public class CommentServiceTest {
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         NewAccountDto newAccount2 = NewAccountDto.builder()
-                .password("worudopasu")
-                .username("henry")
+                .password("password2")
+                .username("user2")
                 .build();
 
         String newAccJson2 = newAccToJson(newAccount2);
@@ -97,19 +87,19 @@ public class CommentServiceTest {
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         // user login
-        String newLogin = newLoginJson("usero", "pasuworudo");
+        String newLogin = newLoginJson("user1", "password1");
 
         MvcResult res = mvc.perform(MockMvcRequestBuilders.post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newLogin)
         ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andReturn();
 
-        tokenUsero = res.getResponse().getContentAsString();
+        tokenUser1 = res.getResponse().getContentAsString();
 
         // create/post picture
         PictureDto newPicture = PictureDto.builder()
-                .title("Test picture posted in service test")
-                .url("https://picsum.photos/205")
+                .title("Test picture posted Account Service")
+                .url("https://picsum.photos/401")
                 .id(UUID.randomUUID().toString())
                 .build();
 
@@ -118,12 +108,12 @@ public class CommentServiceTest {
         mvc.perform(MockMvcRequestBuilders.post("/picture/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newPictureJson)
-                .header("Authorization", "Bearer " + tokenUsero)
+                .header("Authorization", "Bearer " + tokenUser1)
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         newPicture = PictureDto.builder()
-                .title("Another test picture posted in service test")
-                .url("https://picsum.photos/305")
+                .title("Another test picture posted Account Service")
+                .url("https://picsum.photos/501")
                 .id(UUID.randomUUID().toString())
                 .build();
 
@@ -132,11 +122,11 @@ public class CommentServiceTest {
         mvc.perform(MockMvcRequestBuilders.post("/picture/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newPictureJson)
-                .header("Authorization", "Bearer " + tokenUsero)
+                .header("Authorization", "Bearer " + tokenUser1)
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         res = mvc.perform(MockMvcRequestBuilders.get("/pictures")
-                .header("Authorization", "Bearer " + tokenUsero)
+                .header("Authorization", "Bearer " + tokenUser1)
         ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andReturn();
 
         String resString = res.getResponse().getContentAsString();
@@ -152,75 +142,36 @@ public class CommentServiceTest {
 
     @Order(2)
     @Test
-    void AddComment() throws AppBaseException {
-        CommentDto commentDto = CommentDto.builder()
-                .owner("usero")
-                .pictureId(testPictureId)
-                .content("I don't know, seems kinda gae to me")
-                .build();
+    void AddLikedPicture() throws Exception {
 
-        commentService.addComment(commentMapper.commentDtoToComment(commentDto));
-
-        commentDto = CommentDto.builder()
-                .owner("henry")
-                .pictureId(testPictureId)
-                .content("Yeah, the guy above is kinda right")
-                .build();
-
-        commentService.addComment(commentMapper.commentDtoToComment(commentDto));
-
-        commentDto = CommentDto.builder()
-                .owner("usero")
-                .pictureId(testPictureId2)
-                .content("I'm sub")
-                .build();
-
-        commentService.addComment(commentMapper.commentDtoToComment(commentDto));
+        accountService.addLikedPicture("user1", testPictureId);
+        accountService.addLikedPicture("user2", testPictureId);
+        accountService.addLikedPicture("user2", testPictureId2);
     }
 
     @Order(3)
     @Test
-    void FindCommentByPictureId() throws Exception {
-        List<Comment> comments = commentService.getCommentsByPictureId(testPictureId);
+    void GetLikedPicturesByUsername() {
 
-        comments = comments.stream().filter((Comment comment)
-                -> comment.getOwner().equals("henry")
-                || comment.getOwner().equals("usero")
-        ).collect(Collectors.toList());
+        List<String> out = accountService.getLikedPicturesByUsername("user1");
+        Assertions.assertEquals(out.size(), 1);
 
-        Assertions.assertEquals(2, comments.size());
-    }
-
-    @Order(3)
-    @Test
-    void FindCommentByUsername() throws Exception {
-        List<Comment> comments = commentService.getCommentsByUsername("henry");
-
-        Assertions.assertEquals(1, comments.size());
+        out = accountService.getLikedPicturesByUsername("user2");
+        Assertions.assertEquals(out.size(), 2);
     }
 
     @Order(4)
     @Test
-    void EditComment() throws Exception {
-        List<Comment> comments = commentService.getCommentsByUsername("henry");
+    void RemoveLikedPicture() throws Exception {
 
-        comments = comments.stream().filter((Comment comment)
-                -> comment.getOwner().equals("henry")
-                || comment.getOwner().equals("usero")
-        ).collect(Collectors.toList());
+        accountService.removeLikedPicture("user1", testPictureId);
+        accountService.removeLikedPicture("user2", testPictureId2);
 
-        Comment edited = comments.get(0);
-        String editedContent = "This comment was edited by comment edit gang.";
-        edited.setContent(editedContent);
-        commentService.editComment(edited);
 
-        comments = commentService.getCommentsByUsername("henry");
-        edited = comments.get(0);
+        List<String> out = accountService.getLikedPicturesByUsername("user1");
+        Assertions.assertEquals(out.size(), 0);
 
-        if (!edited.getContent().equals(editedContent)) {
-            throw new Exception();
-        }
+        out = accountService.getLikedPicturesByUsername("user2");
+        Assertions.assertEquals(out.size(), 1);
     }
-
-
 }

@@ -8,15 +8,15 @@ import java.util.List;
 import java.util.UUID;
 
 public interface CommentService {
-    public void addComment(Comment comment) throws AppBaseException;
+     void addComment(Comment comment) throws AppBaseException;
 
-    public Comment getComment(UUID uuid) throws AccountException;
+     Comment getComment(UUID uuid) throws AccountException;
 
-    public List<Comment> getCommentsByPictureId(String id);
+     List<Comment> getCommentsByPictureId(String id);
 
-    public List<Comment> getCommentsByUsername(String username);
+     List<Comment> getCommentsByUsername(String username);
 
-    public List<Comment> getAll();
+     List<Comment> getAll();
 
-    public void editComment(Comment comment) throws AppBaseException;
+     void editComment(Comment comment) throws AppBaseException;
 }
