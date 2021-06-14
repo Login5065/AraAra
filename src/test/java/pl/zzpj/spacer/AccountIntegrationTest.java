@@ -62,7 +62,7 @@ public class AccountIntegrationTest {
         // create test user account
         NewAccountDto newAccount = NewAccountDto.builder()
                 .password("password1")
-                .username("user1")
+                .username("user1integrated")
                 .build();
 
         String newAccJson = newAccToJson(newAccount);
@@ -74,7 +74,7 @@ public class AccountIntegrationTest {
 
         NewAccountDto newAccount2 = NewAccountDto.builder()
                 .password("password2")
-                .username("user2")
+                .username("user2integrated")
                 .build();
 
         String newAccJson2 = newAccToJson(newAccount2);
@@ -85,7 +85,7 @@ public class AccountIntegrationTest {
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         // user login
-        String newLogin = newLoginJson("user1", "password1");
+        String newLogin = newLoginJson("user1integrated", "password1");
 
         MvcResult res = mvc.perform(MockMvcRequestBuilders.post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -94,7 +94,7 @@ public class AccountIntegrationTest {
 
         tokenUser1 = res.getResponse().getContentAsString();
 
-        newLogin = newLoginJson("user2", "password2");
+        newLogin = newLoginJson("user2integrated", "password2");
 
         res = mvc.perform(MockMvcRequestBuilders.post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -133,6 +133,7 @@ public class AccountIntegrationTest {
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         res = mvc.perform(MockMvcRequestBuilders.get("/pictures")
+                .header("Authorization", "Bearer " + tokenUser1)
         ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andReturn();
 
         String resString = res.getResponse().getContentAsString();
@@ -159,9 +160,9 @@ public class AccountIntegrationTest {
     @Test
     void AddLikedPicture() throws Exception {
 
-        MvcLikedPictureAdd(tokenUser1, "user1", testPictureId);
-        MvcLikedPictureAdd(tokenUser2, "user2", testPictureId);
-        MvcLikedPictureAdd(tokenUser2, "user2", testPictureId2);
+        MvcLikedPictureAdd(tokenUser1, "user1integrated", testPictureId);
+        MvcLikedPictureAdd(tokenUser2, "user2integrated", testPictureId);
+        MvcLikedPictureAdd(tokenUser2, "user2integrated", testPictureId2);
     }
 
     private List<String> MvcGetLikedPicturesByUsername(String token, String username) throws Exception {
@@ -178,10 +179,10 @@ public class AccountIntegrationTest {
     @Test
     void GetLikedPicturesByUsername() throws Exception {
 
-        List<String> out = MvcGetLikedPicturesByUsername(tokenUser1, "user1");
+        List<String> out = MvcGetLikedPicturesByUsername(tokenUser1, "user1integrated");
         Assertions.assertEquals(out.size(), 1);
 
-        out = MvcGetLikedPicturesByUsername(tokenUser2, "user2");
+        out = MvcGetLikedPicturesByUsername(tokenUser2, "user2integrated");
         Assertions.assertEquals(out.size(), 2);
     }
 
@@ -198,14 +199,13 @@ public class AccountIntegrationTest {
     @Test
     void RemoveLikedPicture() throws Exception {
 
-        MvcLikedPictureRemove(tokenUser1, "user1", testPictureId);
-        MvcLikedPictureRemove(tokenUser2, "user2", testPictureId2);
+        MvcLikedPictureRemove(tokenUser1, "user1integrated", testPictureId);
+        MvcLikedPictureRemove(tokenUser2, "user2integrated", testPictureId2);
 
-
-        List<String> out = MvcGetLikedPicturesByUsername(tokenUser1, "user1");
+        List<String> out = MvcGetLikedPicturesByUsername(tokenUser1, "user1integrated");
         Assertions.assertEquals(out.size(), 0);
 
-        out = MvcGetLikedPicturesByUsername(tokenUser2, "user2");
-        Assertions.assertEquals(out.size(), 1);
+        List<String> out2 = MvcGetLikedPicturesByUsername(tokenUser2, "user2integrated");
+        Assertions.assertEquals(out2.size(), 1);
     }
 }

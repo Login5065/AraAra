@@ -54,6 +54,7 @@ public class AccountServiceTest
     @Autowired
     MockMvc mvc;
 
+    static String tokenUser1;
     static String testPictureId;
     static String testPictureId2;
 
@@ -93,11 +94,11 @@ public class AccountServiceTest
                 .content(newLogin)
         ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andReturn();
 
-        String tokenUser1 = res.getResponse().getContentAsString();
+        tokenUser1 = res.getResponse().getContentAsString();
 
         // create/post picture
         PictureDto newPicture = PictureDto.builder()
-                .title("Test picture posted Integrated")
+                .title("Test picture posted Account Service")
                 .url("https://picsum.photos/401")
                 .id(UUID.randomUUID().toString())
                 .build();
@@ -111,7 +112,7 @@ public class AccountServiceTest
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         newPicture = PictureDto.builder()
-                .title("Another test picture posted Integrated")
+                .title("Another test picture posted Account Service")
                 .url("https://picsum.photos/501")
                 .id(UUID.randomUUID().toString())
                 .build();
@@ -125,6 +126,7 @@ public class AccountServiceTest
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         res = mvc.perform(MockMvcRequestBuilders.get("/pictures")
+                .header("Authorization", "Bearer " + tokenUser1)
         ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andReturn();
 
         String resString = res.getResponse().getContentAsString();

@@ -6,6 +6,7 @@ import pl.zzpj.spacer.dto.AccountDto;
 import pl.zzpj.spacer.model.Account;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,7 +31,7 @@ class AccountMapperTest {
     @Test
     void accountToAccountDto() {
         //given
-        Account account = new Account("RandomId", "Username", "Password", "FirstName", "LastName", new ArrayList<>());
+        Account account = new Account("RandomId", "Username", "Password", "FirstName", "LastName", new HashSet<>());
         //when
         AccountDto accountDto = mapper.accountToAccountDto(account);
         //then
