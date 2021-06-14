@@ -4,6 +4,8 @@ package pl.zzpj.spacer.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pl.zzpj.spacer.dto.AccountDto;
 import pl.zzpj.spacer.dto.CommentDto;
@@ -14,6 +16,7 @@ import pl.zzpj.spacer.exception.AccountException;
 import pl.zzpj.spacer.exception.AppBaseException;
 import pl.zzpj.spacer.exception.PictureException;
 import pl.zzpj.spacer.model.Comment;
+import pl.zzpj.spacer.model.Account;
 import pl.zzpj.spacer.service.interfaces.AccountService;
 
 import java.util.List;
@@ -40,6 +43,7 @@ public class AccountController {
     }
 
     @GetMapping("account/{username}")
+    @PreAuthorize("#username == authentication.principal.username")
     public ResponseEntity getOwnAccount(@PathVariable("username") String username) {
         try {
             return ResponseEntity.status(HttpStatus.OK)
@@ -59,6 +63,7 @@ public class AccountController {
     }
 
     @PutMapping("account/{username}")
+    @PreAuthorize("#username == authentication.principal.username")
     public ResponseEntity<String> editOwnAccount(@PathVariable("username") String username,
                                                  @RequestBody
                                                          NewAccountDto accountDto) {
@@ -71,6 +76,7 @@ public class AccountController {
     }
 
     @DeleteMapping("account/{username}")
+    @PreAuthorize("#username == authentication.principal.username")
     public ResponseEntity<String> deleteOwnAccount(@PathVariable("username") String username) {
         try {
             accountService.deleteAccount(username);
