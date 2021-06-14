@@ -12,6 +12,7 @@ import pl.zzpj.spacer.repositories.AccountRepository;
 import pl.zzpj.spacer.repositories.PictureRepository;
 import pl.zzpj.spacer.service.interfaces.AccountService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -107,4 +108,15 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
+    @Override
+    public List<String> getLikedPicturesByUsername(String username){
+        Optional<Account> queryAccount = accountRepository.findByUsername(username);
+        if (queryAccount.isPresent()) {
+            Account temp = queryAccount.get();
+            return new ArrayList<>(temp.getLikedPictures());
+        }
+        else {
+            return new ArrayList<>();
+        }
+    }
 }
