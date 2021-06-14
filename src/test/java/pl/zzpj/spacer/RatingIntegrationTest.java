@@ -216,6 +216,20 @@ public class RatingIntegrationTest {
                 .header("Authorization", "Bearer " + UserToken1)
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
+
+        ratingDto = RatingDto.builder()
+                .owner("bolek")
+                .pictureId(testPictureId2)
+                .rating(-20)
+                .build();
+
+        ratingDtoJson = newRatingJson(ratingDto);
+        mvc.perform(MockMvcRequestBuilders.post("/rating")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(ratingDtoJson)
+                .header("Authorization", "Bearer " + UserToken1)
+        ).andExpect(MockMvcResultMatchers.status().isBadRequest());
+
     }
 
     @Order(3)
@@ -267,6 +281,7 @@ public class RatingIntegrationTest {
 
         Assertions.assertEquals((ratingDtos.get(0).getRating()).intValue(), ratingNew.getRating());
 
+       
     }
 
 

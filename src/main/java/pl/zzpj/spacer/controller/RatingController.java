@@ -69,7 +69,7 @@ public class RatingController {
     }
 
     @PutMapping("rating/edit")
-    public ResponseEntity editComment(@RequestBody RatingDto ratingDto) {
+    public ResponseEntity editRating(@RequestBody RatingDto ratingDto) {
         try {
             List<Rating> ratings = ratingService.getRatingsByUsername(ratingDto.getOwner())
                     .stream().filter((Rating candidate) -> (
