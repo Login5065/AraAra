@@ -15,4 +15,5 @@ public class I18n {
     public final static String EMAIL_NO_EXIST = "Email do not exist";
 
     public static final String NO_SUCH_RATING = "Rating needs to be between 0-5";
+    public static final String NO_SUCH_LIKED_PICTURE = "No such liked picture is present";
 }

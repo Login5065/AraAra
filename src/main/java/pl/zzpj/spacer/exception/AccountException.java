@@ -24,6 +24,10 @@ public class AccountException extends AppBaseException {
         return new AccountException(I18n.USERNAME_MISMATCH);
     }
 
+    public static AccountException noSuchLikedPictureException() {
+        return new AccountException(I18n.NO_SUCH_LIKED_PICTURE);
+    }
+  
     public static AccountException noSuchEmailException() {
         return new AccountException(I18n.EMAIL_NO_EXIST);
     }
