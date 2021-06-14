@@ -81,9 +81,11 @@ public class CommentController {
                                     candidate.getDate().toString().equals(comment.getDate())))
                     .collect(Collectors.toList());
 
-            if (comments.size() != 1)
+            if (comments.size() > 1)
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .body("Found more than one comment. Unexpected");
+            else if (comments.size() == 0)
+                throw new AccountException("No comment found");
 
             Comment editable = comments.get(0);
 

@@ -198,6 +198,11 @@ public class CommentServiceTest {
     void EditComment() throws Exception {
         List<Comment> comments = commentService.getCommentsByUsername("henry");
 
+        comments = comments.stream().filter((Comment comment)
+                -> comment.getOwner().equals("henry")
+                || comment.getOwner().equals("usero")
+        ).collect(Collectors.toList());
+
         Comment edited = comments.get(0);
         String editedContent = "This comment was edited by comment edit gang.";
         edited.setContent(editedContent);

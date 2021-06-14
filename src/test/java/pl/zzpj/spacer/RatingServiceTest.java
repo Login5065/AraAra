@@ -178,6 +178,11 @@ public class RatingServiceTest {
     void FindCommentsByUsername() throws Exception {
         List<Rating> ratings = ratingService.getRatingsByUsername("bolek");
 
+        ratings = ratings.stream().filter((Rating rating)
+                -> rating.getOwner().equals("bolek")
+                || rating.getOwner().equals("lolek")
+        ).collect(Collectors.toList());
+
         Assertions.assertEquals(2, ratings.size());
     }
 

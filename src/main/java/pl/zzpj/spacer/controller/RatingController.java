@@ -74,13 +74,14 @@ public class RatingController {
             List<Rating> ratings = ratingService.getRatingsByUsername(ratingDto.getOwner())
                     .stream().filter((Rating candidate) -> (
                             candidate.getPictureId().equals(ratingDto.getPictureId()) &&
-                                    candidate.getOwner().equals(ratingDto.getOwner()) &&
-                                    candidate.getDate().toString().equals(ratingDto.getDate())))
+                                    candidate.getOwner().equals(ratingDto.getOwner())))
                     .collect(Collectors.toList());
 
-            if (ratings.size() != 1)
+            if (ratings.size() > 1)
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .body("Found more than one rating. Unexpected");
+            else if (ratings.size() == 0)
+                throw new AccountException("No rating found");
 
             Rating editable = ratings.get(0);
 

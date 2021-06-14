@@ -135,7 +135,7 @@ public class RatingIntegrationTest {
         // create/post picture
         PictureDto newPicture = PictureDto.builder()
                 .title("Test picture posted Integrated for rating")
-                .url("https://picsum.photos/450")
+                .url("https://picsum.photos/451")
                 .id(UUID.randomUUID().toString())
                 .build();
 
@@ -148,7 +148,7 @@ public class RatingIntegrationTest {
 
         newPicture = PictureDto.builder()
                 .title("Another test picture posted Integrated for rating")
-                .url("https://picsum.photos/550")
+                .url("https://picsum.photos/551")
                 .id(UUID.randomUUID().toString())
                 .build();
 
@@ -244,7 +244,7 @@ public class RatingIntegrationTest {
         ratingDtos = ratingDtos.stream().filter((RatingDto rating)
                 -> rating.getOwner().equals("bolekint")
                 || rating.getOwner().equals("lolekint")
-                ).collect(Collectors.toList());
+        ).collect(Collectors.toList());
 
         Assertions.assertEquals(2, ratingDtos.size());
     }
@@ -257,8 +257,13 @@ public class RatingIntegrationTest {
                 .header("Authorization", "Bearer " + UserToken1)
         )).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
         List<RatingDto> ratingDtos = newRatingsFromJson(JsonParser.parseString(res.getResponse().getContentAsString()));
-        Assertions.assertEquals(2, ratingDtos.size());
 
+        ratingDtos = ratingDtos.stream().filter((RatingDto rating)
+                -> rating.getOwner().equals("bolekint")
+                || rating.getOwner().equals("lolekint")
+        ).collect(Collectors.toList());
+
+        Assertions.assertEquals(2, ratingDtos.size());
     }
 
     @Order(5)
@@ -268,7 +273,13 @@ public class RatingIntegrationTest {
         MvcResult res = mvc.perform((MockMvcRequestBuilders.get(requestPath)
                 .header("Authorization", "Bearer " + UserToken1)
         )).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+
         List<RatingDto> ratingDtos = newRatingsFromJson(JsonParser.parseString(res.getResponse().getContentAsString()));
+
+        ratingDtos = ratingDtos.stream().filter((RatingDto rating)
+                -> rating.getOwner().equals("bolekint")
+                || rating.getOwner().equals("lolekint")
+        ).collect(Collectors.toList());
 
         RatingDto ratingNew = ratingDtos.get(0);
         ratingNew.setRating(5);
