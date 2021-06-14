@@ -36,7 +36,7 @@ public class EmailServiceTest {
     @Test
     void SendEmailWithStrings() {
         //given
-        String email = "baka@gmail.com";
+        String email = "baka@gmaail.com";
         String subject = "test";
         String text = "test";
 
@@ -50,5 +50,14 @@ public class EmailServiceTest {
         String text = "test";
 
         assertDoesNotThrow(() -> emailService.sendMessageToAllAccounts(subject, text));
+    }
+
+    @Test
+    void TestMessageToExistingEmail() {
+        String email = "helloscr666@gmail.com";
+        String subject = "testSubject";
+        String text = "testText";
+
+        assertDoesNotThrow(() -> emailService.sendMessage(email, subject, text));
     }
 }
