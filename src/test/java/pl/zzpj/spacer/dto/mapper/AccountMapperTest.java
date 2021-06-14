@@ -17,7 +17,7 @@ class AccountMapperTest {
     @Test
     void accountDtoToAccount() {
         //given
-        AccountDto accountDto = new AccountDto("Username", "FirstName", "LastName");
+        AccountDto accountDto = new AccountDto("Username", "FirstName", "LastName", "email");
         //when
         Account account = mapper.accountDtoToAccount(accountDto);
         //then
@@ -25,12 +25,13 @@ class AccountMapperTest {
         assertEquals(accountDto.getUsername(), account.getUsername());
         assertEquals(accountDto.getFirstName(), account.getFirstName());
         assertEquals(accountDto.getLastName(), account.getLastName());
+        assertEquals(accountDto.getEmail(), account.getEmail());
     }
 
     @Test
     void accountToAccountDto() {
         //given
-        Account account = new Account("RandomId", "Username", "Password", "FirstName", "LastName", new ArrayList<>());
+        Account account = new Account("RandomId", "Username", "Password", "FirstName", "LastName", "email", new ArrayList<>());
         //when
         AccountDto accountDto = mapper.accountToAccountDto(account);
         //then
@@ -38,6 +39,6 @@ class AccountMapperTest {
         assertEquals(account.getUsername(), accountDto.getUsername());
         assertEquals(account.getFirstName(), accountDto.getFirstName());
         assertEquals(account.getLastName(), accountDto.getLastName());
-
+        assertEquals(account.getEmail(), accountDto.getEmail());
     }
 }
