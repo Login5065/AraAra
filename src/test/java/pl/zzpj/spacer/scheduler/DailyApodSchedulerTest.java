@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pl.zzpj.spacer.exception.ApodSchedulerException;
 import pl.zzpj.spacer.exception.PictureException;
 import pl.zzpj.spacer.model.Picture;
+import pl.zzpj.spacer.service.interfaces.EmailService;
 import pl.zzpj.spacer.service.interfaces.PictureService;
 import pl.zzpj.spacer.util.InitialTagsFromTitleConverter;
 
@@ -28,6 +29,9 @@ class DailyApodSchedulerTest {
 
     @Mock
     private InitialTagsFromTitleConverter initialTagsFromTitleConverter;
+
+    @Mock
+    private EmailService emailService;
 
     @InjectMocks
     private DailyApodScheduler dailyApodScheduler;

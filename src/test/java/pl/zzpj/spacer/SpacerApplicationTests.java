@@ -29,6 +29,7 @@ class SpacerApplicationTests {
                 .add("password", nad.getPassword())
                 .add("firstName", nad.getFirstName())
                 .add("lastName", nad.getLastName())
+                .add("email", nad.getEmail())
                 .getJson().toString();
     }
 
@@ -120,6 +121,7 @@ class SpacerApplicationTests {
                 .password("__TEST_PASSWORD_EDITED")
                 .firstName("Tester")
                 .lastName("Chester")
+                .email("test@gmail.com")
                 .build();
 
         String newTestAccountEditJson = newAccToJson(newTestAccountEdit);
