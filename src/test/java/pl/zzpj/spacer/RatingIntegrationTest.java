@@ -18,6 +18,7 @@ import pl.zzpj.spacer.dto.NewAccountDto;
 import pl.zzpj.spacer.dto.PictureDto;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -32,7 +33,6 @@ public class RatingIntegrationTest {
 
     static String testPictureId;
     static String testPictureId2;
-
 
 
     String newAccToJson(NewAccountDto nad) {
@@ -91,7 +91,7 @@ public class RatingIntegrationTest {
         // create test user account
         NewAccountDto newAccount = NewAccountDto.builder()
                 .password("abc123")
-                .username("bolek")
+                .username("bolekint")
                 .build();
 
         String newAccJson = newAccToJson(newAccount);
@@ -103,7 +103,7 @@ public class RatingIntegrationTest {
 
         NewAccountDto newAccount2 = NewAccountDto.builder()
                 .password("123abc")
-                .username("lolek")
+                .username("lolekint")
                 .build();
 
         String newAccJson2 = newAccToJson(newAccount2);
@@ -114,7 +114,7 @@ public class RatingIntegrationTest {
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         // user login
-        String newLogin = newLoginJson("bolek", "abc123");
+        String newLogin = newLoginJson("bolekint", "abc123");
 
         MvcResult res = mvc.perform(MockMvcRequestBuilders.post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -123,7 +123,7 @@ public class RatingIntegrationTest {
 
         UserToken1 = res.getResponse().getContentAsString();
 
-        newLogin = newLoginJson("lolek", "123abc");
+        newLogin = newLoginJson("lolekint", "123abc");
 
         res = mvc.perform(MockMvcRequestBuilders.post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -134,8 +134,8 @@ public class RatingIntegrationTest {
 
         // create/post picture
         PictureDto newPicture = PictureDto.builder()
-                .title("Test picture posted Integrated")
-                .url("https://picsum.photos/400")
+                .title("Test picture posted Integrated for rating")
+                .url("https://picsum.photos/450")
                 .id(UUID.randomUUID().toString())
                 .build();
 
@@ -147,8 +147,8 @@ public class RatingIntegrationTest {
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         newPicture = PictureDto.builder()
-                .title("Another test picture posted Integrated")
-                .url("https://picsum.photos/500")
+                .title("Another test picture posted Integrated for rating")
+                .url("https://picsum.photos/550")
                 .id(UUID.randomUUID().toString())
                 .build();
 
@@ -178,7 +178,7 @@ public class RatingIntegrationTest {
     @Test
     void AddRating() throws Exception {
         RatingDto ratingDto = RatingDto.builder()
-                .owner("bolek")
+                .owner("bolekint")
                 .pictureId(testPictureId)
                 .rating(3)
                 .build();
@@ -190,8 +190,8 @@ public class RatingIntegrationTest {
                 .header("Authorization", "Bearer " + UserToken1)
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
-         ratingDto = RatingDto.builder()
-                .owner("lolek")
+        ratingDto = RatingDto.builder()
+                .owner("lolekint")
                 .pictureId(testPictureId)
                 .rating(5)
                 .build();
@@ -204,7 +204,7 @@ public class RatingIntegrationTest {
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         ratingDto = RatingDto.builder()
-                .owner("bolek")
+                .owner("bolekint")
                 .pictureId(testPictureId2)
                 .rating(0)
                 .build();
@@ -218,7 +218,7 @@ public class RatingIntegrationTest {
 
 
         ratingDto = RatingDto.builder()
-                .owner("bolek")
+                .owner("bolekint")
                 .pictureId(testPictureId2)
                 .rating(-20)
                 .build();
@@ -234,36 +234,41 @@ public class RatingIntegrationTest {
 
     @Order(3)
     @Test
-    void FindRatingByPictureId() throws Exception{
+    void FindRatingByPictureId() throws Exception {
         String requestPath = "/rating/picture/" + testPictureId;
         MvcResult res = mvc.perform(MockMvcRequestBuilders.get(requestPath)
                 .header("Authorization", "Bearer " + UserToken1))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
         List<RatingDto> ratingDtos = newRatingsFromJson(JsonParser.parseString(res.getResponse().getContentAsString()));
-        Assertions.assertEquals(2, ratingDtos.size());
 
+        ratingDtos = ratingDtos.stream().filter((RatingDto rating)
+                -> rating.getOwner().equals("bolekint")
+                || rating.getOwner().equals("lolekint")
+                ).collect(Collectors.toList());
+
+        Assertions.assertEquals(2, ratingDtos.size());
     }
 
     @Order(4)
     @Test
-    void FindRatingByUserId()throws Exception{
-        String requestPath = "/rating/username/" + "bolek";
+    void FindRatingByUserId() throws Exception {
+        String requestPath = "/rating/username/" + "bolekint";
         MvcResult res = mvc.perform((MockMvcRequestBuilders.get(requestPath)
-        .header("Authorization", "Bearer " + UserToken1)
+                .header("Authorization", "Bearer " + UserToken1)
         )).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
-        List<RatingDto>ratingDtos=newRatingsFromJson(JsonParser.parseString(res.getResponse().getContentAsString()));
-        Assertions.assertEquals(2,ratingDtos.size());
+        List<RatingDto> ratingDtos = newRatingsFromJson(JsonParser.parseString(res.getResponse().getContentAsString()));
+        Assertions.assertEquals(2, ratingDtos.size());
 
     }
 
     @Order(5)
     @Test
-    void EditRating() throws Exception{
-        String requestPath = "/rating/username/" + "bolek";
+    void EditRating() throws Exception {
+        String requestPath = "/rating/username/" + "bolekint";
         MvcResult res = mvc.perform((MockMvcRequestBuilders.get(requestPath)
                 .header("Authorization", "Bearer " + UserToken1)
         )).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
-        List<RatingDto>ratingDtos=newRatingsFromJson(JsonParser.parseString(res.getResponse().getContentAsString()));
+        List<RatingDto> ratingDtos = newRatingsFromJson(JsonParser.parseString(res.getResponse().getContentAsString()));
 
         RatingDto ratingNew = ratingDtos.get(0);
         ratingNew.setRating(5);
@@ -277,7 +282,7 @@ public class RatingIntegrationTest {
         res = mvc.perform((MockMvcRequestBuilders.get(requestPath)
                 .header("Authorization", "Bearer " + UserToken1)
         )).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
-        ratingDtos=newRatingsFromJson(JsonParser.parseString(res.getResponse().getContentAsString()));
+        ratingDtos = newRatingsFromJson(JsonParser.parseString(res.getResponse().getContentAsString()));
 
         Assertions.assertEquals((ratingDtos.get(0).getRating()).intValue(), ratingNew.getRating());
 
@@ -292,7 +297,7 @@ public class RatingIntegrationTest {
         res = mvc.perform((MockMvcRequestBuilders.get(requestPath)
                 .header("Authorization", "Bearer " + UserToken1)
         )).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
-        ratingDtos=newRatingsFromJson(JsonParser.parseString(res.getResponse().getContentAsString()));
+        ratingDtos = newRatingsFromJson(JsonParser.parseString(res.getResponse().getContentAsString()));
 
         Assertions.assertEquals((ratingDtos.get(0).getRating()).intValue(), 5);
 

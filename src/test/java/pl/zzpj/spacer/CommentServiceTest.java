@@ -105,8 +105,8 @@ public class CommentServiceTest {
 
         // create/post picture
         PictureDto newPicture = PictureDto.builder()
-                .title("Test picture posted")
-                .url("https://picsum.photos/200")
+                .title("Test picture posted in service test")
+                .url("https://picsum.photos/205")
                 .id(UUID.randomUUID().toString())
                 .build();
 
@@ -118,8 +118,8 @@ public class CommentServiceTest {
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         newPicture = PictureDto.builder()
-                .title("Another test picture posted")
-                .url("https://picsum.photos/300")
+                .title("Another test picture posted in service test")
+                .url("https://picsum.photos/305")
                 .id(UUID.randomUUID().toString())
                 .build();
 
