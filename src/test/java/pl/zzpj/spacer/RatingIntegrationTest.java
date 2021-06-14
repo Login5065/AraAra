@@ -281,7 +281,22 @@ public class RatingIntegrationTest {
 
         Assertions.assertEquals((ratingDtos.get(0).getRating()).intValue(), ratingNew.getRating());
 
-       
+        ratingNew.setRating(90);
+
+        mvc.perform(MockMvcRequestBuilders.put("/rating/edit")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(newRatingJson(ratingNew))
+                .header("Authorization", "Bearer " + UserToken1)
+        );
+
+        res = mvc.perform((MockMvcRequestBuilders.get(requestPath)
+                .header("Authorization", "Bearer " + UserToken1)
+        )).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+        ratingDtos=newRatingsFromJson(JsonParser.parseString(res.getResponse().getContentAsString()));
+
+        Assertions.assertEquals((ratingDtos.get(0).getRating()).intValue(), 5);
+
+
     }
 
 
