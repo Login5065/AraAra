@@ -11,25 +11,32 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import pl.zzpj.spacer.dto.RatingDto;
 import pl.zzpj.spacer.dto.CommentDto;
 import pl.zzpj.spacer.dto.NewAccountDto;
 import pl.zzpj.spacer.dto.PictureDto;
-import pl.zzpj.spacer.dto.mapper.CommentMapper;
-import pl.zzpj.spacer.dto.mapper.CommentMapperImpl;
+import pl.zzpj.spacer.dto.mapper.RatingMapper;
+import pl.zzpj.spacer.dto.mapper.RatingMapperImpl;
 import pl.zzpj.spacer.exception.AppBaseException;
 import pl.zzpj.spacer.model.Comment;
-import pl.zzpj.spacer.service.CommentServiceImpl;
+import pl.zzpj.spacer.model.Rating;
+import pl.zzpj.spacer.service.RatingServiceImpl;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+
 @AutoConfigureMockMvc
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class CommentServiceTest {
+public class RatingServiceTest {
+    RatingMapper ratingMapper = new RatingMapperImpl();
 
-    CommentMapper commentMapper = new CommentMapperImpl();
+    @Autowired
+    RatingServiceImpl ratingService;
+    @Autowired
+    MockMvc mvc;
 
     String newAccToJson(NewAccountDto nad) {
         return JsonBuilderFactory.buildObject()
@@ -55,13 +62,7 @@ public class CommentServiceTest {
                 .getJson().toString();
     }
 
-    @Autowired
-    CommentServiceImpl commentService;
-
-    @Autowired
-    MockMvc mvc;
-
-    static String tokenUsero;
+    static String UserToken;
     static String testPictureId;
     static String testPictureId2;
 
@@ -70,8 +71,8 @@ public class CommentServiceTest {
     void CreateTestData() throws Exception {
         // create test user account
         NewAccountDto newAccount = NewAccountDto.builder()
-                .password("pasuworudo")
-                .username("usero")
+                .password("abc123")
+                .username("bolek")
                 .build();
 
         String newAccJson = newAccToJson(newAccount);
@@ -82,8 +83,8 @@ public class CommentServiceTest {
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         NewAccountDto newAccount2 = NewAccountDto.builder()
-                .password("worudopasu")
-                .username("henry")
+                .password("123abc")
+                .username("lolek")
                 .build();
 
         String newAccJson2 = newAccToJson(newAccount2);
@@ -94,19 +95,19 @@ public class CommentServiceTest {
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         // user login
-        String newLogin = newLoginJson("usero", "pasuworudo");
+        String newLogin = newLoginJson("bolek", "abc123");
 
         MvcResult res = mvc.perform(MockMvcRequestBuilders.post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newLogin)
         ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andReturn();
 
-        tokenUsero = res.getResponse().getContentAsString();
+        UserToken = res.getResponse().getContentAsString();
 
         // create/post picture
         PictureDto newPicture = PictureDto.builder()
-                .title("Test picture posted in service test")
-                .url("https://picsum.photos/205")
+                .title("Test picture posted")
+                .url("https://picsum.photos/404")
                 .id(UUID.randomUUID().toString())
                 .build();
 
@@ -118,8 +119,8 @@ public class CommentServiceTest {
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         newPicture = PictureDto.builder()
-                .title("Another test picture posted in service test")
-                .url("https://picsum.photos/305")
+                .title("Another test picture posted")
+                .url("https://picsum.photos/440")
                 .id(UUID.randomUUID().toString())
                 .build();
 
@@ -146,75 +147,73 @@ public class CommentServiceTest {
 
     @Order(2)
     @Test
-    void AddComment() throws AppBaseException {
-        CommentDto commentDto = CommentDto.builder()
-                .owner("usero")
+    void AddRating() throws AppBaseException {
+        RatingDto ratingDto = RatingDto.builder()
+                .owner("bolek")
                 .pictureId(testPictureId)
-                .content("I don't know, seems kinda gae to me")
+                .rating(3)
                 .build();
 
-        commentService.addComment(commentMapper.commentDtoToComment(commentDto));
+        ratingService.addRating(ratingMapper.ratingDtoToRating(ratingDto));
 
-        commentDto = CommentDto.builder()
-                .owner("henry")
-                .pictureId(testPictureId)
-                .content("Yeah, the guy above is kinda right")
-                .build();
-
-        commentService.addComment(commentMapper.commentDtoToComment(commentDto));
-
-        commentDto = CommentDto.builder()
-                .owner("usero")
+         ratingDto = RatingDto.builder()
+                .owner("bolek")
                 .pictureId(testPictureId2)
-                .content("I'm sub")
+                .rating(1)
                 .build();
 
-        commentService.addComment(commentMapper.commentDtoToComment(commentDto));
+        ratingService.addRating(ratingMapper.ratingDtoToRating(ratingDto));
+
+        ratingDto = RatingDto.builder()
+                .owner("lolek")
+                .pictureId(testPictureId)
+                .rating(5)
+                .build();
+
+        ratingService.addRating(ratingMapper.ratingDtoToRating(ratingDto));
     }
 
     @Order(3)
     @Test
-    void FindCommentByPictureId() throws Exception {
-        List<Comment> comments = commentService.getCommentsByPictureId(testPictureId);
+    void FindCommentsByUsername() throws Exception {
+        List<Rating> ratings = ratingService.getRatingsByUsername("bolek");
 
-        comments = comments.stream().filter((Comment comment)
-                -> comment.getOwner().equals("henry")
-                || comment.getOwner().equals("usero")
+        ratings = ratings.stream().filter((Rating rating)
+                -> rating.getOwner().equals("bolek")
+                || rating.getOwner().equals("lolek")
         ).collect(Collectors.toList());
 
-        Assertions.assertEquals(2, comments.size());
-    }
-
-    @Order(3)
-    @Test
-    void FindCommentByUsername() throws Exception {
-        List<Comment> comments = commentService.getCommentsByUsername("henry");
-
-        Assertions.assertEquals(1, comments.size());
+        Assertions.assertEquals(2, ratings.size());
     }
 
     @Order(4)
     @Test
-    void EditComment() throws Exception {
-        List<Comment> comments = commentService.getCommentsByUsername("henry");
+    void FindCommentsByPictureId() throws Exception {
+        List<Rating> ratings = ratingService.getRatingsByPictureId(testPictureId);
 
-        comments = comments.stream().filter((Comment comment)
-                -> comment.getOwner().equals("henry")
-                || comment.getOwner().equals("usero")
+        ratings = ratings.stream().filter((Rating rating)
+                -> rating.getOwner().equals("bolek")
+                || rating.getOwner().equals("lolek")
         ).collect(Collectors.toList());
 
-        Comment edited = comments.get(0);
-        String editedContent = "This comment was edited by comment edit gang.";
-        edited.setContent(editedContent);
-        commentService.editComment(edited);
+        Assertions.assertEquals(2, ratings.size());
+    }
 
-        comments = commentService.getCommentsByUsername("henry");
-        edited = comments.get(0);
+    @Order(5)
+    @Test
+    void EditRating() throws Exception {
+        List<Rating> ratings = ratingService.getRatingsByUsername("bolek");
 
-        if (!edited.getContent().equals(editedContent)) {
+        Rating ratingNew = ratings.get(0);
+        ratingNew.setRating(5);
+        ratingService.editRating(ratingNew);
+
+        ratings = ratingService.getRatingsByUsername("bolek");
+        Rating rate = ratings.get(0);
+
+        if (!rate.getRating().equals(ratingNew.getRating())) {
             throw new Exception();
         }
     }
-
 
 }
