@@ -9,17 +9,17 @@ import java.util.List;
 import java.util.UUID;
 
 public interface RatingService {
-    public void addRating(Rating rating) throws AppBaseException;
+     void addRating(Rating rating) throws AppBaseException;
 
-    public Rating getRating(UUID uuid) throws AccountException;
+     Rating getRating(UUID uuid) throws AccountException;
 
-    public List<Rating> getRatingsByPictureId(String id);
+     List<Rating> getRatingsByPictureId(String id);
 
-    public List<Rating> getRatingsByUsername(String username);
+     List<Rating> getRatingsByUsername(String username);
 
-    public List<Rating> getAll();
+     List<Rating> getAll();
 
-    public void editRating(Rating rating) throws AppBaseException;
+     void editRating(Rating rating) throws AppBaseException;
 
 
 
