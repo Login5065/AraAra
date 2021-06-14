@@ -1,8 +1,6 @@
 package pl.zzpj.spacer.repositories;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import pl.zzpj.spacer.model.Account;
-import pl.zzpj.spacer.model.Comment;
 import pl.zzpj.spacer.model.Rating;
 
 import java.util.List;

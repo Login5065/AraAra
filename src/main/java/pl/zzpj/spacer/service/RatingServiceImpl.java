@@ -6,17 +6,14 @@ import pl.zzpj.spacer.exception.AccountException;
 import pl.zzpj.spacer.exception.AppBaseException;
 import pl.zzpj.spacer.exception.RatingException;
 import pl.zzpj.spacer.model.Account;
-import pl.zzpj.spacer.model.Comment;
 import pl.zzpj.spacer.model.Rating;
 import pl.zzpj.spacer.model.Picture;
 import pl.zzpj.spacer.repositories.AccountRepository;
-import pl.zzpj.spacer.repositories.CommentRepository;
 import pl.zzpj.spacer.repositories.RatingRepository;
 import pl.zzpj.spacer.repositories.PictureRepository;
 import pl.zzpj.spacer.service.interfaces.RatingService;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

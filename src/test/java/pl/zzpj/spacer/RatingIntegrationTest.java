@@ -11,18 +11,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import pl.zzpj.spacer.dto.CommentDto;
 import pl.zzpj.spacer.dto.RatingDto;
 import pl.zzpj.spacer.dto.NewAccountDto;
 import pl.zzpj.spacer.dto.PictureDto;
-import pl.zzpj.spacer.exception.AppBaseException;
-import pl.zzpj.spacer.model.Rating;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -58,7 +53,7 @@ public class RatingIntegrationTest {
 
     String newPictureJson(PictureDto pd) {
         return JsonBuilderFactory.buildObject()
-                .add("id", pd.getId().toString())
+                .add("id", pd.getId())
                 .add("url", pd.getUrl())
                 .add("title", pd.getTitle())
                 .getJson().toString();
