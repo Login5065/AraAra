@@ -185,6 +185,12 @@ public class RatingServiceTest {
     @Test
     void FindCommentsByPictureId() throws Exception {
         List<Rating> ratings = ratingService.getRatingsByPictureId(testPictureId);
+
+        ratings = ratings.stream().filter((Rating rating)
+                -> rating.getOwner().equals("bolek")
+                || rating.getOwner().equals("lolek")
+        ).collect(Collectors.toList());
+
         Assertions.assertEquals(2, ratings.size());
     }
 
