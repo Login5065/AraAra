@@ -14,7 +14,7 @@ class NewAccountMapperTest {
     void newAccountDtoToEntity() {
 
         //given
-        NewAccountDto newAccountDto = new NewAccountDto("Username", "Password", "FirstName", "LastName");
+        NewAccountDto newAccountDto = new NewAccountDto("Username", "Password", "FirstName", "LastName", "email");
         //when
         Account account = newAccountMapper.newAccountDtoToEntity(newAccountDto);
         //then
@@ -22,5 +22,6 @@ class NewAccountMapperTest {
         assertEquals(newAccountDto.getUsername(), account.getUsername());
         assertEquals(newAccountDto.getFirstName(), account.getFirstName());
         assertEquals(newAccountDto.getLastName(), account.getLastName());
+        assertEquals(newAccountDto.getEmail(), account.getEmail());
     }
 }

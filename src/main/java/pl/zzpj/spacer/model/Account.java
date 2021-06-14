@@ -48,15 +48,21 @@ public class Account {
     @Setter
     private String lastName;
 
+    @NotNull
+    @Getter
+    @Setter
+    private String email;
+
     @Getter
     @Setter
     private Set<String> likedPictures = new HashSet<>();
 
     @Default
-    public Account(String username, String password, String firstName, String lastName) {
+    public Account(String username, String password, String firstName, String lastName, String email) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
     }
 }

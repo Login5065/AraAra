@@ -9,14 +9,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import pl.zzpj.spacer.exception.AccountException;
 import pl.zzpj.spacer.exception.ApodSchedulerException;
 import pl.zzpj.spacer.exception.PictureException;
 import pl.zzpj.spacer.model.Picture;
+import pl.zzpj.spacer.service.interfaces.EmailService;
 import pl.zzpj.spacer.service.interfaces.PictureService;
 import pl.zzpj.spacer.util.InitialTagsFromTitleConverter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -33,10 +37,13 @@ public class DailyApodScheduler {
 
     private final InitialTagsFromTitleConverter initialTagsFromTitleConverter;
 
+    private final EmailService emailService;
+
     @Autowired
-    public DailyApodScheduler( PictureService pictureService, InitialTagsFromTitleConverter initialTagsFromTitleConverter) {
+    public DailyApodScheduler( PictureService pictureService, InitialTagsFromTitleConverter initialTagsFromTitleConverter, EmailService emailService) {
         this.pictureService = pictureService;
         this.initialTagsFromTitleConverter = initialTagsFromTitleConverter;
+        this.emailService = emailService;
     }
 
     @Scheduled(cron = "0 33 16 * * ?")
@@ -52,5 +59,40 @@ public class DailyApodScheduler {
         } else {
             throw ApodSchedulerException.operationResultIsNull();
         }
+    }
+
+    @Scheduled(cron = "0 0 12 * * *")
+    public void dailyNotifications() throws AccountException {
+        LOGGER.error("Notifications Task :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()));
+        String subject = "Most popular tags on Spacer!";
+
+        List<Picture> pictureList = pictureService.getAll();
+        Map<String, Integer> pictureTagMap= new HashMap<>();
+        for(Picture picture : pictureList) {
+            for(String tag : picture.getTags()) {
+                Integer n = pictureTagMap.get(tag);
+                n = (n == null) ? 1 : ++n;
+                pictureTagMap.put(tag, n);
+            }
+        }
+
+      Map<String, Integer> sortedTagMap = pictureTagMap.entrySet()
+              .stream()
+              .sorted(Map.Entry.comparingByValue())
+              .collect(Collectors.toMap(
+                  Map.Entry::getKey,
+                  Map.Entry::getValue,
+                  (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+
+        int size = 0;
+        StringBuilder textMessage = new StringBuilder();
+        textMessage.append("Check out our most popular tags today \n");
+        for (Map.Entry<String, Integer> pair : sortedTagMap.entrySet()) {
+            textMessage.append(pair.getKey()).append(" ");
+            if(++size > 3)
+                break;
+        }
+
+        emailService.sendMessageToAllAccounts(subject, textMessage.toString());
     }
 }
