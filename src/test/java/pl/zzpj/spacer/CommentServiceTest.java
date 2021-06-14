@@ -39,6 +39,7 @@ public class CommentServiceTest {
                 .add("password", nad.getPassword())
                 .add("firstName", nad.getFirstName())
                 .add("lastName", nad.getLastName())
+                .add("email", nad.getEmail())
                 .getJson().toString();
     }
 

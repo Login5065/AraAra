@@ -23,4 +23,8 @@ public class AccountException extends AppBaseException {
     public static AccountException usernameMismatch() {
         return new AccountException(I18n.USERNAME_MISMATCH);
     }
+
+    public static AccountException noSuchEmailException() {
+        return new AccountException(I18n.EMAIL_NO_EXIST);
+    }
 }
