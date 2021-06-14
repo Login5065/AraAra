@@ -11,5 +11,8 @@ public class I18n {
     public final static String ACCOUNT_EXISTS = "Account already exists";
     public final static String NO_ACCOUNT = "No such account found";
     public final static String USERNAME_MISMATCH = "Usernames do not match";
+
     public final static String EMAIL_NO_EXIST = "Email do not exist";
+
+    public static final String NO_SUCH_RATING = "Rating needs to be between 0-5";
 }

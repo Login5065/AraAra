@@ -21,6 +21,7 @@ import pl.zzpj.spacer.repositories.AccountRepository;
 @AutoConfigureMockMvc
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 class SpacerApplicationTests {
 
     String newAccToJson(NewAccountDto nad) {
