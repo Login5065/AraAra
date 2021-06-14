@@ -61,7 +61,7 @@ public class DailyApodScheduler {
         }
     }
 
-    @Scheduled(cron = "0 0 12 * * *")
+    @Scheduled(cron = "0 15 12 * * ?")
     public void dailyNotifications() throws AccountException {
         LOGGER.error("Notifications Task :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()));
         String subject = "Most popular tags on Spacer!";
