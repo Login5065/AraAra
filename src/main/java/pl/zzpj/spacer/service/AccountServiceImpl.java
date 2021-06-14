@@ -5,8 +5,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.zzpj.spacer.exception.AccountException;
 import pl.zzpj.spacer.exception.AppBaseException;
+import pl.zzpj.spacer.exception.PictureException;
 import pl.zzpj.spacer.model.Account;
+import pl.zzpj.spacer.model.Picture;
 import pl.zzpj.spacer.repositories.AccountRepository;
+import pl.zzpj.spacer.repositories.PictureRepository;
 import pl.zzpj.spacer.service.interfaces.AccountService;
 
 import java.util.List;
@@ -17,6 +20,8 @@ import java.util.Optional;
 public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
+
+    private final PictureRepository pictureRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -64,6 +69,39 @@ public class AccountServiceImpl implements AccountService {
         if (queryAccount.isPresent()) {
             Account temp = queryAccount.get();
             accountRepository.delete(temp);
+        } else {
+            throw AccountException.noSuchAccountException();
+        }
+    }
+
+    @Override
+    public void addLikedPicture(String username, String pictureId) throws AccountException, PictureException {
+        Optional<Account> queryAccount = accountRepository.findByUsername(username);
+        if (queryAccount.isPresent()) {
+            Account temp = queryAccount.get();
+            Optional<Picture> queryPicture = pictureRepository.findById(pictureId);
+            if (queryPicture.isPresent()) {
+                temp.getLikedPictures().add(pictureId);
+                accountRepository.save(temp);
+            } else {
+                throw PictureException.noSuchPictureException();
+            }
+        } else {
+            throw AccountException.noSuchAccountException();
+        }
+    }
+
+    @Override
+    public void removeLikedPicture(String username, String pictureId) throws AccountException {
+        Optional<Account> queryAccount = accountRepository.findByUsername(username);
+        if (queryAccount.isPresent()) {
+            Account temp = queryAccount.get();
+            if (temp.getLikedPictures().contains(pictureId)) {
+                temp.getLikedPictures().remove(pictureId);
+                accountRepository.save(temp);
+            } else {
+                throw AccountException.noSuchLikedPictureException();
+            }
         } else {
             throw AccountException.noSuchAccountException();
         }

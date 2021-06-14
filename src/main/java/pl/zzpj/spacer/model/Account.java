@@ -12,9 +12,8 @@ import pl.zzpj.spacer.util.Default;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -51,7 +50,7 @@ public class Account {
 
     @Getter
     @Setter
-    private List<String> likedPhotos = new ArrayList<>();
+    private Set<String> likedPictures = new HashSet<>();
 
     @Default
     public Account(String username, String password, String firstName, String lastName) {

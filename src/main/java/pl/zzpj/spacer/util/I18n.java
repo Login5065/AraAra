@@ -13,4 +13,5 @@ public class I18n {
     public final static String USERNAME_MISMATCH = "Usernames do not match";
 
     public static final String NO_SUCH_RATING = "Rating needs to be between 0-5";
+    public static final String NO_SUCH_LIKED_PICTURE = "No such liked picture is present";
 }

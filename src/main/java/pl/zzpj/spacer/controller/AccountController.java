@@ -11,6 +11,7 @@ import pl.zzpj.spacer.dto.mapper.AccountMapper;
 import pl.zzpj.spacer.dto.mapper.NewAccountMapper;
 import pl.zzpj.spacer.exception.AccountException;
 import pl.zzpj.spacer.exception.AppBaseException;
+import pl.zzpj.spacer.exception.PictureException;
 import pl.zzpj.spacer.service.interfaces.AccountService;
 
 import java.util.List;
@@ -73,6 +74,28 @@ public class AccountController {
             accountService.deleteAccount(username);
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (AppBaseException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("account/{username}")
+    public ResponseEntity<String> addOwnLikedPicture(@PathVariable("username") String username, @RequestBody
+            String pictureId) {
+        try {
+            accountService.addLikedPicture(username, pictureId);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (AccountException | PictureException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("account/{username}")
+    public ResponseEntity<String> removeOwnLikedPicture(@PathVariable("username") String username, @RequestBody
+            String pictureId) {
+        try {
+            accountService.removeLikedPicture(username, pictureId);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (AccountException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
