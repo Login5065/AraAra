@@ -17,4 +17,4 @@ Spring Boot project for Advanced Programming in Java course.
 ## Info
 
 Open API documentation available at:
-```localhost:8080/swagger-ui.html```
+```spacer-zzpj.herokuapp.com/swagger-ui.html```
