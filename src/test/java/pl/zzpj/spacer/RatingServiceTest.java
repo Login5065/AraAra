@@ -118,6 +118,7 @@ public class RatingServiceTest {
         mvc.perform(MockMvcRequestBuilders.post("/picture/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newPictureJson)
+                .header("Authorization", "Bearer " + UserToken)
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         newPicture = PictureDto.builder()
@@ -131,9 +132,11 @@ public class RatingServiceTest {
         mvc.perform(MockMvcRequestBuilders.post("/picture/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newPictureJson)
+                .header("Authorization", "Bearer " + UserToken)
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         res = mvc.perform(MockMvcRequestBuilders.get("/pictures")
+                .header("Authorization", "Bearer " + UserToken)
         ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andReturn();
 
         String resString = res.getResponse().getContentAsString();
