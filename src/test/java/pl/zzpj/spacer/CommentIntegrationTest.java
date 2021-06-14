@@ -136,7 +136,7 @@ public class CommentIntegrationTest {
         // create/post picture
         PictureDto newPicture = PictureDto.builder()
                 .title("Test picture posted Integrated")
-                .url("https://picsum.photos/400")
+                .url("https://picsum.photos/401")
                 .id(UUID.randomUUID().toString())
                 .build();
 
@@ -149,7 +149,7 @@ public class CommentIntegrationTest {
 
         newPicture = PictureDto.builder()
                 .title("Another test picture posted Integrated")
-                .url("https://picsum.photos/500")
+                .url("https://picsum.photos/501")
                 .id(UUID.randomUUID().toString())
                 .build();
 
@@ -265,6 +265,11 @@ public class CommentIntegrationTest {
     @Test
     void EditComment() throws Exception {
         List<CommentDto> commentDtos = MvcGetCommentByUsername("henryIntegrated", tokenHenry);
+
+        commentDtos = commentDtos.stream().filter((CommentDto comment)
+                -> comment.getOwner().equals("henryIntegrated")
+                || comment.getOwner().equals("useroIntegrated")
+        ).collect(Collectors.toList());
 
         CommentDto commentDto = commentDtos.get(0);
         String editedContent = "This comment was edited by comment edit gang.";
