@@ -92,7 +92,7 @@ public class RatingController {
         } catch (AccountException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (AppBaseException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(e.getMessage());
         }
     }
 
